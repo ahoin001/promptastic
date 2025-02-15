@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 
-let isConnected = false; //
+let isConnected = false;
 
+// Next uses lambda functions for api calls, which means we will need to reconnect to the database each time we make a reques
 export const connectToDatabase = async () => {
   mongoose.set("strictQuery", true);
 
