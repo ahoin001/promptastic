@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { signIn, signOut, getProviders, useSession } from "next-auth/react";
+import { Avatar, Button } from "@mantine/core";
 
 const Nav = () => {
   const { data: session } = useSession();
@@ -38,17 +39,28 @@ const Nav = () => {
       <div className="hidden sm:flex">
         {session?.user ? (
           <div className="flex gap-3 md:gap-5">
-            <Link href="/create-prompt" className="black_btn">
-              Create Post
+            <Link href="/create-prompt">
+              <Button
+                radius="xl"
+                onClick={signOut}
+                variant="gradient"
+                gradient={{ from: "red", to: "orange", deg: 90 }}
+              >
+                Create Post
+              </Button>
             </Link>
 
-            <button type="button" className="outline_btn" onClick={signOut}>
+            <Button
+              color="rgba(0, 0, 0, 1)"
+              variant="outline"
+              radius="xl"
+              onClick={signOut}
+            >
               Sign out
-            </button>
+            </Button>
 
             <Link href="/profile">
-              {/*TODO Change to profile pic */}
-              <Image
+              <Avatar
                 src={session?.user.image}
                 width={37}
                 height={37}

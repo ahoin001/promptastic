@@ -5,7 +5,8 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 import Image from "next/image";
-import { set } from "mongoose";
+
+import { Avatar, Badge } from "@mantine/core";
 
 const PromptCard = ({ post, handleDelete, handleEdit, handleTagClick }) => {
   const pathName = usePathname();
@@ -31,7 +32,7 @@ const PromptCard = ({ post, handleDelete, handleEdit, handleTagClick }) => {
     <div className="prompt_card">
       <div className="flex justify-between items-start gap-5">
         <div className="flex flex-1 justify-start items-center gap-3 cursor-pointer">
-          <Image
+          <Avatar
             src={post.author.image}
             alt="profile image"
             width={40}
@@ -58,12 +59,15 @@ const PromptCard = ({ post, handleDelete, handleEdit, handleTagClick }) => {
       </div>
 
       <p className="my-4 font-satoshi text-sm text-gray-700">{post.prompt}</p>
-      <p
-        className="font-inter text-sm blue_gradient cursor-pointer"
+      {/* TODO make tag click return filtered tag list */}
+      <Badge
+        color="yellow"
+        size="lg"
+        radius="md"
         onClick={() => handleTagClick && handleTagClick(post.tag)}
       >
         #{post.tag}
-      </p>
+      </Badge>
 
       {session?.user.id === post.author._id && pathName === "/profile" && (
         <div className="mt-5 flex justify-end gap-4 border-t border-gray-200 pt-4">
