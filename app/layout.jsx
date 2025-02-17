@@ -1,6 +1,19 @@
+// TODO Polishing
+//  Add loading states
+//  Make profile page require authentication
+
+import "@mantine/core/styles.css"; // Imports Mantine styles here to be used for entire application
+import "@styles/globals.css"; // Imports Global styles here to be used for entire application
+
+import {
+  ColorSchemeScript,
+  MantineProvider,
+  mantineHtmlProps,
+} from "@mantine/core";
+
 import Nav from "@components/Nav";
 import Provider from "@components/Provider";
-import "@styles/globals.css"; // Imports Global styles here to be used for entire application
+import QueryProvider from "./providers/QueryProvider";
 
 export const metadata = {
   description: "Discover & Share Prompts for Writing",
@@ -9,15 +22,22 @@ export const metadata = {
 
 const RootLayout = ({ children }) => {
   return (
-    <html lang="en">
+    <html lang="en" {...mantineHtmlProps}>
+      <head>
+        <ColorSchemeScript />
+      </head>
       <body>
         <Provider>
           <div className="main">
             <div className="gradient" />
           </div>
           <main className="app">
-            <Nav />
-            {children}
+            <QueryProvider>
+              <MantineProvider>
+                <Nav />
+                {children}
+              </MantineProvider>
+            </QueryProvider>
           </main>
         </Provider>
       </body>
