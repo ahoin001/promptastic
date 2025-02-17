@@ -1,7 +1,7 @@
 "use client";
 
 import { useDebouncedValue } from "@mantine/hooks";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import { Skeleton, TextInput } from "@mantine/core";

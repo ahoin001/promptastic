@@ -2,14 +2,18 @@
 //  Add loading states
 //  Make profile page require authentication
 
-import "@mantine/core/styles.css"; // Imports Mantine styles here to be used for entire application
-import "@styles/globals.css"; // Imports Global styles here to be used for entire application
+// Imports styles here to be used for entire application
+import "@mantine/core/styles.css";
+import "@mantine/notifications/styles.css";
+import "@styles/globals.css";
 
 import {
   ColorSchemeScript,
   MantineProvider,
   mantineHtmlProps,
 } from "@mantine/core";
+
+import { Notifications } from "@mantine/notifications";
 
 import Nav from "@components/Nav";
 import Provider from "@components/Provider";
@@ -34,6 +38,7 @@ const RootLayout = ({ children }) => {
           <main className="app">
             <QueryProvider>
               <MantineProvider>
+                <Notifications color="teal" position="top-right" />
                 <Nav />
                 {children}
               </MantineProvider>

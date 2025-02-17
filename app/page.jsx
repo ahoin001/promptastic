@@ -12,7 +12,7 @@ export const Home = () => {
         <span className="orange_gradient text-center">AI Powered Prompts</span>
       </h1>
 
-      <Text mt={16} size="xl" c="dimmed" class="max-w-xl" ta="center">
+      <Text mt={16} size="xl" c="dimmed" ta="center">
         Promptastic is an open source AI pompting tool for modern world to
         discover, create and share creative prompts
       </Text>

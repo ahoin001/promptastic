@@ -1,47 +1,62 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+
+import { notifications } from "@mantine/notifications";
 
 import Profile from "@components/Profile";
 
 const MyProfile = () => {
   const router = useRouter();
-
   const { data: session } = useSession();
+  const {
+    data: posts = [],
+    error,
+    isPending,
+    status,
+  } = useQuery({
+    queryKey: ["userPosts", session?.user.id],
+    queryFn: async () => {
+      const response = await fetch(`/api/users/${session?.user.id}/posts`);
+      if (!response.ok) throw new Error("Problem fetching posts");
+      return response.json();
+    },
+    enabled: !!session?.user.id, // Only fetch if the user is available
+  });
 
-  const [loading, setLoading] = useState(false);
-  const [posts, setPosts] = useState([]);
-
-  // TODO Replace with pretty modal
   const handleDelete = async (postId) => {
-    const hasConfirmed = confirm("Are you sure you want to delete this post?");
-
-    if (hasConfirmed) {
+    if (postId) {
       try {
         setLoading(true);
 
-        const res = await fetch(`/api/prompt/${postId}`, {
+        const response = await fetch(`/api/prompt/${postId}`, {
           method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
         });
 
         const filteredPosts = posts.filter((post) => post._id !== postId);
 
         setPosts(filteredPosts);
 
-        // if (res.ok) {
-        //   return new Response(
-        //     { message: "Post deleted successfully" },
-        //     { status: 200 }
-        //   );
-        // }
+        const res = await response.json();
+
+        if (response.ok) {
+          notifications.show({
+            title: "Success",
+            message: res.message,
+          });
+        }
       } catch (error) {
         console.log(error);
-        return new Response(
-          { message: "Problem deleting post" },
-          { status: 500 }
-        );
+        notifications.show({
+          title: "Error",
+          message: "Problem deleting post",
+        });
       } finally {
         setLoading(false);
       }
@@ -52,25 +67,12 @@ const MyProfile = () => {
     router.push(`update-prompt?id=${postId}`);
   };
 
-  useEffect(() => {
-    const getUsersPosts = async () => {
-      console.log(session?.user);
-      const response = await fetch(`/api/users/${session?.user.id}/posts`);
-      const data = await response.json();
-
-      setPosts(data);
-    };
-
-    if (session?.user.id) {
-      getUsersPosts();
-    }
-  }, []);
-
   return (
     <Profile
       name="My"
       description="Welcome to your personalized profile page"
       posts={posts}
+      fetchingUserPosts={isPending}
       handleDelete={handleDelete}
       handleEdit={handleEdit}
     />

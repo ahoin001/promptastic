@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+
 import { useState, useEffect } from "react";
 import { signIn, signOut, getProviders, useSession } from "next-auth/react";
 import { Avatar, Button } from "@mantine/core";
@@ -42,7 +43,6 @@ const Nav = () => {
             <Link href="/create-prompt">
               <Button
                 radius="xl"
-                onClick={signOut}
                 variant="gradient"
                 gradient={{ from: "red", to: "orange", deg: 90 }}
               >

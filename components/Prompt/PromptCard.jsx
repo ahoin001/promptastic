@@ -1,16 +1,27 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { useDisclosure } from "@mantine/hooks";
+import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 import Image from "next/image";
 
-import { Avatar, Badge } from "@mantine/core";
+import {
+  Avatar,
+  Badge,
+  Box,
+  Button,
+  Group,
+  Modal,
+  Text,
+  Title,
+} from "@mantine/core";
 
 const PromptCard = ({ post, handleDelete, handleEdit, handleTagClick }) => {
+  const [opened, { open, close }] = useDisclosure(false);
   const pathName = usePathname();
-  const router = useRouter();
+
   const { data: session } = useSession();
 
   const [copiedPrompt, setCopiedPrompt] = useState("");
@@ -79,12 +90,50 @@ const PromptCard = ({ post, handleDelete, handleEdit, handleTagClick }) => {
           </p>
           <p
             className="font-inter text-sm orange_gradient cursor-pointer"
-            onClick={() => handleDelete(post._id)} // Call handleDelete function
+            onClick={open}
           >
             Delete
           </p>
         </div>
       )}
+
+      {/* overlayOpacity={0.75} */}
+      {/* overlayBlur={3} */}
+      {/* transitionDuration={400} */}
+      <Modal
+        opened={opened}
+        onClose={close}
+        centered
+        size="lg"
+        title="Are you sure?"
+        padding="xl"
+        transition="fade"
+      >
+        <Box style={{ textAlign: "center" }}>
+          <Text className="font-inter">
+            You are about to delete one of your prompts.
+          </Text>
+          <Text className="font-inter" style={{ marginBottom: "20px" }}>
+            This action cannot be undone.
+          </Text>
+
+          <Group justify="flex-end" gap="lg" mt={50}>
+            <Button onClick={close} size="md" color="blue" radius="md">
+              Close Modal
+            </Button>
+
+            <Button
+              variant="outline"
+              size="md"
+              color="red"
+              radius="md"
+              onClick={() => handleDelete(post._id)}
+            >
+              Delete prompt
+            </Button>
+          </Group>
+        </Box>
+      </Modal>
     </div>
   );
 };

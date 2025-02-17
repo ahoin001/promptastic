@@ -15,7 +15,13 @@ export const POST = async (req) => {
 
     await newPrompt.save();
 
-    return new Response(JSON.stringify(newPrompt), { status: 200 });
+    return new Response(
+      JSON.stringify({
+        message: "Prompt created successfully",
+        prompt: newPrompt,
+      }),
+      { status: 200 }
+    );
   } catch (error) {
     console.log(error);
     return new Response(JSON.stringify({ message: "error creating prompt" }), {

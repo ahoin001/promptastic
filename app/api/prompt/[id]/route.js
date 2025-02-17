@@ -9,14 +9,18 @@ export const DELETE = async (req, { params }) => {
     await Prompt.findByIdAndDelete(id);
 
     return new Response(
-      { message: "Prompt deleted successfully" },
-      { status: 200 }
+      JSON.stringify(
+        { message: "Prompt deleted successfully" },
+        { status: 200 }
+      )
     );
   } catch (error) {
     console.log(error);
     return new Response(
-      { message: "could not find prompt to delete" },
-      { status: 500 }
+      JSON.stringify(
+        { message: "could not find prompt to delete" },
+        { status: 500 }
+      )
     );
   }
 };

@@ -1,7 +1,10 @@
 "use client";
+
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
+
+import { notifications } from "@mantine/notifications";
 
 import Form from "@components/Form";
 
@@ -16,7 +19,6 @@ const CreatePrompt = () => {
   });
 
   const createPrompt = async (e) => {
-    console.log("createPrompt");
     e.preventDefault();
     setLoading(true);
 
@@ -32,9 +34,18 @@ const CreatePrompt = () => {
           author: session?.user.id ?? null,
         }),
       });
+      const data = await res.json();
+      console.log("createPrompt: ", data);
 
       if (res.ok) {
         setLoading(false);
+
+        notifications.show({
+          title: `Success`,
+          message: `New prompt has been created.`,
+          color: "teal",
+        });
+
         router.push("/");
       }
     } catch (error) {

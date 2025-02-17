@@ -11,6 +11,7 @@
   "dependencies": {
     "@mantine/core": "^7.17.0",
     "@mantine/hooks": "^7.17.0",
+    "@mantine/notifications": "^7.17.0",
     "@tanstack/react-query": "^5.66.5",
     "bcrypt": "^5.1.1",
     "escape-string-regexp": "^5.0.0",
