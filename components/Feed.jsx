@@ -11,7 +11,7 @@ const fetchPosts = async ({ queryKey }) => {
   const [_key, { debouncedSearchValue }] = queryKey;
 
   try {
-    const res = await fetch(`/api/prompt/all?query=${debouncedSearchValue}`);
+    const res = await fetch(`/api/prompt/all?search=${debouncedSearchValue}`);
     if (!res.ok) throw new Error("Failed to fetch posts");
     return await res.json();
   } catch (error) {

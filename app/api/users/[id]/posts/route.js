@@ -8,7 +8,9 @@ export const GET = async (req, { params }) => {
 
     const prompts = await Prompt.find({
       user: id,
-    }).populate("user");
+    })
+      .populate("user")
+      .populate("tags");
 
     return new Response(JSON.stringify(prompts), { status: 200 });
   } catch (error) {
