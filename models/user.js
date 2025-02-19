@@ -1,6 +1,16 @@
-import { Schema, model, models } from "mongoose";
+import mongoose from "mongoose";
+
+const { Schema, model, models } = mongoose;
 
 const UserSchema = new Schema({
+  firstName: {
+    type: String,
+    trim: true,
+  },
+  lastName: {
+    type: String,
+    trim: true,
+  },
   email: {
     type: String,
     required: [true, "Please provide an email"],
@@ -8,14 +18,25 @@ const UserSchema = new Schema({
   },
   username: {
     type: String,
-    required: [true, "Please provide a username"],
+    // required: [true, "Please provide a username"],
     unique: [true, "Username already exists"],
-    match: [/^[a-zA-Z0-9]+$/, "Username can only contain letters and numbers"], // regex may fail since not using recommended
+    match: [
+      /^[a-zA-Z0-9\s]+$/,
+      "Username can only contain letters, numbers, and spaces",
+    ],
   },
   image: {
     type: String,
     // default: "/assets/images/default-profile.jpg",
   },
+  createdAt: { type: Date, default: Date.now() },
+});
+
+UserSchema.virtual("fullName").get(function () {
+  if (this.firstName && this.lastName) {
+    return `${this.firstName} ${this.lastName}`;
+  }
+  return this.firstName || this.lastName || "";
 });
 
 const User = models.User || model("User", UserSchema);

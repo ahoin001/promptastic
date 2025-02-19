@@ -1,7 +1,10 @@
-import { Schema, model, models } from "mongoose";
+import mongoose from "mongoose";
+
+const { Schema, model, models } = mongoose;
+// import { Schema, model, models } from "mongoose";
 
 const PromptSchema = new Schema({
-  author: {
+  user: {
     type: Schema.Types.ObjectId,
     ref: "User",
   },
@@ -9,10 +12,18 @@ const PromptSchema = new Schema({
     type: String,
     required: [true, "Please provide a prompt"],
   },
-  tag: {
-    type: String,
-    required: [true, "Please provide a tag"],
-  },
+  tags: [{ type: Schema.Types.ObjectId, ref: "Tag" }],
+  votes: [
+    {
+      user: { type: Schema.Types.ObjectId, ref: "User" },
+      vote: { type: Number, enum: [1, -1] },
+    },
+  ],
+  createdAt: { type: Date, default: Date.now() },
+});
+
+PromptSchema.virtual("voteCount").get(() => {
+  return this.votes.reduce((sum, v) => sum + v.vote, 0);
 });
 
 // Use prompt that already exists or create new one based on our schema

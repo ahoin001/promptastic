@@ -1,6 +1,16 @@
 import Link from "next/link";
 
-const Form = ({ loading, handleSubmit, post, setPost, type }) => {
+import { TagsInput } from "@mantine/core";
+
+const Form = ({
+  loading,
+  handleSubmit,
+  post,
+  tags,
+  setPost,
+  setTags,
+  type,
+}) => {
   return (
     <section className="w-full max-w-full flex-start flex-col">
       <h1 className="head_text text-left">
@@ -31,19 +41,30 @@ const Form = ({ loading, handleSubmit, post, setPost, type }) => {
         </label>
         <label>
           <span className="font-satoshi font-semibold text-base text-gray-700">
-            Tag
-            <span className="font-normal">(#idea, #recipie, #language)</span>
+            Tags
           </span>
 
+          {/* TODO checkout options filtering in the docs to suggest existing tags */}
+          {/* TODO checkout Inside popover for quick tags edit */}
+          <TagsInput
+            data={[]}
+            value={tags}
+            onChange={setTags}
+            className="mt-2"
+            placeholder="Enter tag and press enter or comma"
+            maxTags={4}
+            clearable
+          />
+
           {/* TODO  Maybe replace with some kind of pill input */}
-          <input
+          {/* <input
             type="text"
             value={post.tag}
             onChange={(e) => setPost({ ...post, tag: e.target.value })}
             placeholder="#tag"
             className="form_input"
             required
-          />
+          /> */}
         </label>
 
         <div className="flex-end mx-3 mb-5 gap-4">

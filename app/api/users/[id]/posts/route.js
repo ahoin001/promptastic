@@ -7,8 +7,8 @@ export const GET = async (req, { params }) => {
     const { id } = await params;
 
     const prompts = await Prompt.find({
-      author: id,
-    }).populate("author");
+      user: id,
+    }).populate("user");
 
     return new Response(JSON.stringify(prompts), { status: 200 });
   } catch (error) {

@@ -30,7 +30,7 @@ export const GET = async (req, { params }) => {
     await connectToDatabase();
     const { id } = await params;
 
-    const prompt = await Prompt.findById(id).populate("author");
+    const prompt = await Prompt.findById(id).populate("user");
 
     if (!prompt) {
       return new Response(JSON.stringify({ message: "prompt not found" }), {

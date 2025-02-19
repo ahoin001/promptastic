@@ -18,6 +18,8 @@ const CreatePrompt = () => {
     tag: "",
   });
 
+  const [tags, setTags] = useState([]);
+
   const createPrompt = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -30,8 +32,8 @@ const CreatePrompt = () => {
         },
         body: JSON.stringify({
           prompt: post.prompt,
-          tag: post.tag,
-          author: session?.user.id ?? null,
+          tags: tags,
+          user: session?.user.id ?? null,
         }),
       });
       const data = await res.json();
@@ -59,7 +61,9 @@ const CreatePrompt = () => {
     <Form
       type="Create"
       post={post}
+      tags={tags}
       setPost={setPost}
+      setTags={setTags}
       loading={loading}
       handleSubmit={createPrompt}
     />

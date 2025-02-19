@@ -43,8 +43,9 @@ const PromptCard = ({ post, handleDelete, handleEdit, handleTagClick }) => {
     <div className="prompt_card">
       <div className="flex justify-between items-start gap-5">
         <div className="flex flex-1 justify-start items-center gap-3 cursor-pointer">
+          {/* TODO where do they get image from? */}
+          {/* src={post.user.image} */}
           <Avatar
-            src={post.author.image}
             alt="profile image"
             width={40}
             height={40}
@@ -53,9 +54,9 @@ const PromptCard = ({ post, handleDelete, handleEdit, handleTagClick }) => {
 
           <div>
             <h3 className="font-satoshi font-semibold text-gray-900">
-              {post.author.username}
+              {post.user.username}
             </h3>
-            <p className="text-sm text-gray-500">{post.author.email}</p>
+            <p className="text-sm text-gray-500">{post.user.email}</p>
           </div>
         </div>
 
@@ -70,17 +71,24 @@ const PromptCard = ({ post, handleDelete, handleEdit, handleTagClick }) => {
       </div>
 
       <p className="my-4 font-satoshi text-sm text-gray-700">{post.prompt}</p>
-      {/* TODO make tag click return filtered tag list */}
-      <Badge
-        color="yellow"
-        size="lg"
-        radius="md"
-        onClick={() => handleTagClick && handleTagClick(post.tag)}
-      >
-        #{post.tag}
-      </Badge>
 
-      {session?.user.id === post.author._id && pathName === "/profile" && (
+      <Group>
+        {/* TODO make tag click return filtered tag list */}
+        {post.tags.map((tag) => {
+          return (
+            <Badge
+              color="yellow"
+              size="lg"
+              radius="md"
+              onClick={() => handleTagClick && handleTagClick(tag._id)}
+            >
+              #{tag.name}
+            </Badge>
+          );
+        })}
+      </Group>
+
+      {session?.user.id === post.user._id && pathName === "/profile" && (
         <div className="mt-5 flex justify-end gap-4 border-t border-gray-200 pt-4">
           <p
             className="font-inter text-sm green_gradient cursor-pointer"
