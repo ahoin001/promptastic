@@ -1,5 +1,6 @@
 import { connectToDatabase } from "@utils/database";
 import Prompt from "@models/prompt";
+import Tag from "@models/Tag";
 
 export const DELETE = async (req, { params }) => {
   try {
@@ -30,7 +31,7 @@ export const GET = async (req, { params }) => {
     await connectToDatabase();
     const { id } = await params;
 
-    const prompt = await Prompt.findById(id).populate("user");
+    const prompt = await Prompt.findById(id).populate("user").populate("tags");
 
     if (!prompt) {
       return new Response(JSON.stringify({ message: "prompt not found" }), {
@@ -48,7 +49,7 @@ export const GET = async (req, { params }) => {
 };
 
 export const PATCH = async (req, { params, body }) => {
-  const { prompt, tag } = await req.json();
+  const { prompt, tags } = await req.json();
 
   try {
     await connectToDatabase();
@@ -63,9 +64,21 @@ export const PATCH = async (req, { params, body }) => {
       });
     }
 
+    // Tags reusable, so save tags we don't have or use tags we already do
+    const tagIds = await Promise.all(
+      tags.map(async (_tag) => {
+        let tag = await Tag.findOne({ name: _tag.name.toLowerCase() });
+        if (!tag) {
+          tag = new Tag({ name: _tag.name.toLowerCase() });
+          await tag.save();
+        }
+        return tag._id;
+      })
+    );
+
     existingPrompt.prompt = prompt;
 
-    existingPrompt.tag = tag;
+    existingPrompt.tags = tagIds;
 
     await existingPrompt.save();
 

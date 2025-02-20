@@ -1,6 +1,7 @@
 import Link from "next/link";
 
-import { TagsInput } from "@mantine/core";
+import { Button, TagsInput } from "@mantine/core";
+import { useQuery } from "@tanstack/react-query";
 
 const Form = ({
   loading,
@@ -11,6 +12,20 @@ const Form = ({
   setTags,
   type,
 }) => {
+  const { data: allTags = [] } = useQuery({
+    queryKey: ["tags"],
+    queryFn: async () => {
+      const response = await fetch(`api/tags/all`);
+      return response.json();
+    },
+  });
+
+  const formattedAvailableTags = allTags.length
+    ? allTags.map((tag) => tag.name)
+    : [];
+
+  const formattedTags = tags.map((tag) => tag.name);
+
   return (
     <section className="w-full max-w-full flex-start flex-col">
       <h1 className="head_text text-left">
@@ -44,41 +59,35 @@ const Form = ({
             Tags
           </span>
 
-          {/* TODO checkout options filtering in the docs to suggest existing tags */}
-          {/* TODO checkout Inside popover for quick tags edit */}
           <TagsInput
-            data={[]}
-            value={tags}
-            onChange={setTags}
+            data={formattedAvailableTags}
+            value={formattedTags}
+            onChange={(newTags) =>
+              setTags(newTags.map((tag) => ({ name: tag })))
+            }
             className="mt-2"
             placeholder="Enter tag and press enter or comma"
             maxTags={4}
             clearable
           />
-
-          {/* TODO  Maybe replace with some kind of pill input */}
-          {/* <input
-            type="text"
-            value={post.tag}
-            onChange={(e) => setPost({ ...post, tag: e.target.value })}
-            placeholder="#tag"
-            className="form_input"
-            required
-          /> */}
         </label>
 
         <div className="flex-end mx-3 mb-5 gap-4">
-          <Link href="/" className="text-sm text-gray-500">
-            Cancel
+          <Link href="/">
+            <Button radius="xl" variant="outline" color="black">
+              Cancel
+            </Button>
           </Link>
 
-          <button
+          <Button
             type="submit"
-            disabled={loading}
-            className="px-5 py-1.5 text-sm bg-primary-orange rounded-full text-white"
+            loading={loading}
+            radius="xl"
+            variant="gradient"
+            gradient={{ from: "red", to: "orange", deg: 90 }}
           >
-            {loading ? `${type}...` : type}
-          </button>
+            {type}
+          </Button>
         </div>
       </form>
     </section>

@@ -8,12 +8,12 @@ export const POST = async (req) => {
   try {
     await connectToDatabase();
 
-    // I want to reuse tags we already have, so do a check
+    // Make tags reusable, so save tags we don't have or use tags we already do
     const tagIds = await Promise.all(
-      tags.map(async (tagName) => {
-        let tag = await Tag.findOne({ name: tagName.toLowerCase() });
+      tags.map(async (_tag) => {
+        let tag = await Tag.findOne({ name: _tag.name.toLowerCase() });
         if (!tag) {
-          tag = new Tag({ name: tagName.toLowerCase() });
+          tag = new Tag({ name: _tag.name.toLowerCase() });
           await tag.save();
         }
         return tag._id;

@@ -13,8 +13,9 @@ const UpdatePrompt = () => {
   const [loading, setLoading] = useState(false);
   const [post, setPost] = useState({
     prompt: "",
-    tag: "",
   });
+
+  const [tags, setTags] = useState([]);
 
   const editPost = async (e) => {
     e.preventDefault();
@@ -23,9 +24,8 @@ const UpdatePrompt = () => {
     if (!promptId) {
       alert("Prompt id not found");
     }
-
+    // TODO Update edit of array of tags, currently current tags not making it to form
     try {
-      console.log("edit");
       const res = await fetch(`/api/prompt/${promptId}`, {
         method: "PATCH",
         headers: {
@@ -33,7 +33,7 @@ const UpdatePrompt = () => {
         },
         body: JSON.stringify({
           prompt: post.prompt,
-          tag: post.tag,
+          tags: tags,
         }),
       });
 
@@ -52,11 +52,13 @@ const UpdatePrompt = () => {
     const getPrompt = async () => {
       const res = await fetch(`/api/prompt/${promptId}`);
       const data = await res.json();
+      console.log("******: ", data);
 
       setPost({
-        prompt: data.prompt,
-        tag: data.tag,
+        ...data,
       });
+
+      setTags([...data.tags]);
     };
 
     if (promptId) {
@@ -68,7 +70,9 @@ const UpdatePrompt = () => {
     <Form
       type="Edit"
       post={post}
+      tags={tags}
       setPost={setPost}
+      setTags={setTags}
       loading={loading}
       handleSubmit={editPost}
     />

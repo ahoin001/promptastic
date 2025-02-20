@@ -77,6 +77,7 @@ const PromptCard = ({ post, handleDelete, handleEdit, handleTagClick }) => {
         {post.tags.map((tag) => {
           return (
             <Badge
+              key={tag._id}
               color="yellow"
               size="lg"
               radius="md"
