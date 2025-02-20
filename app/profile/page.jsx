@@ -12,11 +12,14 @@ import Profile from "@components/Profile";
 const MyProfile = () => {
   const router = useRouter();
   const { data: session } = useSession();
+  const [loading, setLoading] = useState(false);
+
   const {
     data: posts = [],
     error,
     isPending,
     status,
+    refetch,
   } = useQuery({
     queryKey: ["userPosts", session?.user.id],
     queryFn: async () => {
@@ -39,10 +42,6 @@ const MyProfile = () => {
           },
         });
 
-        const filteredPosts = posts.filter((post) => post._id !== postId);
-
-        setPosts(filteredPosts);
-
         const res = await response.json();
 
         if (response.ok) {
@@ -50,12 +49,14 @@ const MyProfile = () => {
             title: "Success",
             message: res.message,
           });
+          refetch();
         }
       } catch (error) {
         console.log(error);
         notifications.show({
           title: "Error",
           message: "Problem deleting post",
+          color: "teal",
         });
       } finally {
         setLoading(false);
@@ -69,10 +70,11 @@ const MyProfile = () => {
 
   return (
     <Profile
-      name="My"
       description="Welcome to your personalized profile page"
-      posts={posts}
       fetchingUserPosts={isPending}
+      deletingPost={loading}
+      name="My"
+      posts={posts}
       handleDelete={handleDelete}
       handleEdit={handleEdit}
     />

@@ -6,7 +6,6 @@ export const DELETE = async (req, { params }) => {
   try {
     await connectToDatabase();
     const { id } = await params;
-
     await Prompt.findByIdAndDelete(id);
 
     return new Response(

@@ -2,6 +2,7 @@ import PromptCard from "@components/Prompt/PromptCard";
 import { Skeleton } from "@mantine/core";
 
 const Profile = ({
+  deletingPost,
   description,
   fetchingUserPosts,
   name,
@@ -14,7 +15,11 @@ const Profile = ({
       <h1 className="head_text text-left">{name} Profile</h1>
       <p className="desc text-left">{description}</p>
 
-      <Skeleton visible={fetchingUserPosts} width="100%" height={600}>
+      <Skeleton
+        visible={fetchingUserPosts || deletingPost}
+        width="100%"
+        height={600}
+      >
         <div className="mt-10 prompt_layout">
           {posts.length === 0 ? (
             <p>No prompts found</p>

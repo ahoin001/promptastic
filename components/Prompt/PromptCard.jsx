@@ -34,6 +34,11 @@ const PromptCard = ({ post, handleDelete, handleEdit, handleTagClick }) => {
     }, 3000);
   };
 
+  const onConfirmDelete = (postId) => {
+    close();
+    handleDelete(postId);
+  };
+
   const iconUrl =
     copiedPrompt === post.prompt
       ? "/assets/icons/tick.svg"
@@ -136,7 +141,7 @@ const PromptCard = ({ post, handleDelete, handleEdit, handleTagClick }) => {
               size="md"
               color="red"
               radius="md"
-              onClick={() => handleDelete(post._id)}
+              onClick={() => onConfirmDelete(post._id)}
             >
               Delete prompt
             </Button>
