@@ -1,7 +1,4 @@
-import mongoose from "mongoose";
-
-const { Schema, model, models } = mongoose;
-// import { Schema, model, models } from "mongoose";
+import { Schema, model, models } from "mongoose";
 
 const PromptSchema = new Schema({
   user: {
@@ -19,7 +16,7 @@ const PromptSchema = new Schema({
       vote: { type: Number, enum: [1, -1] },
     },
   ],
-  createdAt: { type: Date, default: Date.now() },
+  createdAt: { type: Date, default: () => Date.now() },
 });
 
 PromptSchema.virtual("voteCount").get(() => {

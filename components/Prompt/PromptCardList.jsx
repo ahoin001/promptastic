@@ -1,9 +1,9 @@
 import PromptCard from "./PromptCard";
-import { Skeleton } from "@mantine/core";
+import { Group, Skeleton } from "@mantine/core";
 
 const PromptCardList = ({ data, loading, handleTagClick }) => {
   return (
-    <div className="mt-16 prompt_layout">
+    <div className="space-y-6 sm:columns-2 sm:gap-6 xl:columns-3">
       {data.length ? (
         data.map((post) => {
           return (
@@ -15,7 +15,7 @@ const PromptCardList = ({ data, loading, handleTagClick }) => {
           );
         })
       ) : (
-        <p>No posts found</p>
+        <Group position="center">No posts found</Group>
       )}
     </div>
   );

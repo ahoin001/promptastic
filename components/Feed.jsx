@@ -1,54 +1,80 @@
 "use client";
 
-import { useDebouncedValue } from "@mantine/hooks";
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-
-import { Skeleton, TextInput } from "@mantine/core";
+import { Group, Select, TextInput } from "@mantine/core";
 import PromptCardList from "@components/Prompt/PromptCardList";
-
-const fetchPosts = async ({ queryKey }) => {
-  const [_key, { debouncedSearchValue }] = queryKey;
-
-  try {
-    const res = await fetch(`/api/prompt/all?search=${debouncedSearchValue}`);
-    if (!res.ok) throw new Error("Failed to fetch posts");
-    return await res.json();
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
+import { usePosts } from "@hooks/usePosts";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useTags } from "@hooks/useTags";
 
 const Feed = () => {
-  const [searchText, setSearchText] = useState("");
-  const [debouncedSearchValue] = useDebouncedValue(searchText, 400);
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
 
-  const { data: posts = [], isPending } = useQuery({
-    queryKey: ["posts", { debouncedSearchValue }],
-    queryFn: fetchPosts,
-    keepPreviousData: true, // Prevents UI flicker while fetching
-  });
+  // Use URL as state, easier refreshing, back and forth traversal and link sharing
+  const search = searchParams.get("search") || "";
+  const tag = searchParams.get("tag") || "";
+  const sort = searchParams.get("sort") || "desc";
 
-  const onSearchChange = (e) => {
-    setSearchText(e.target.value);
+  const { data: posts = [], isPending } = usePosts(search, tag, sort);
+
+  const { data: allTags = [] } = useTags();
+
+  const formattedTags = [
+    { value: "", label: "Any" },
+    ...allTags.map((tag) => {
+      return { value: tag.name, label: tag.name };
+    }),
+  ];
+
+  const updateQueryParams = (key, value) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (value) {
+      params.set(key, value);
+    } else {
+      params.delete(key);
+    }
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
   return (
     <>
-      <section className="feed">
-        <form className="relative w-full flex-center">
+      <section className="mt-16">
+        <form className="relative w-full max-w-xl mx-auto">
           <TextInput
             radius="lg"
             size="lg"
             className="w-full"
             placeholder="Search for tag or user name"
-            value={searchText}
-            onChange={onSearchChange}
+            defaultValue={search}
+            onChange={(e) => updateQueryParams("search", e.target.value)}
           />
         </form>
 
-        <PromptCardList data={posts} loading={isPending} />
+        <Group mt={16}>
+          <Select
+            label="Tag"
+            value={tag}
+            onChange={(value) => updateQueryParams("tag", value)}
+            data={formattedTags}
+            clearable
+          />
+
+          <Select
+            label="Time"
+            value={sort}
+            onChange={(value) => updateQueryParams("sort", value)}
+            data={[
+              { value: "desc", label: "Latest" },
+              { value: "asc", label: "Oldest" },
+            ]}
+            clearable
+          />
+        </Group>
+
+        <Group mt={32}>
+          <PromptCardList data={posts} loading={isPending} />
+        </Group>
       </section>
     </>
   );

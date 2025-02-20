@@ -1,9 +1,7 @@
 import escapeStringRegexp from "escape-string-regexp";
-
 import { connectToDatabase } from "@utils/database";
-
 import Prompt from "@models/prompt";
-import Tag from "@models/Tag";
+import Tag from "@models/tag";
 
 export const GET = async (req) => {
   try {
@@ -28,22 +26,21 @@ export const GET = async (req) => {
       }
     }
 
+    let sortOption = {};
+    if (sort === "votes") {
+      sortOption = { votes: -1 }; // Assuming you have a field for votes
+    } else if (sort === "desc") {
+      sortOption = { createdAt: -1 };
+    } else {
+      sortOption = { createdAt: 1 };
+    }
+
     const prompts = await Prompt.find(query)
       .populate("user", "username")
       .populate("tags", "name")
+      .select("prompt createdAt")
+      .sort(sortOption)
       .lean();
-
-    if (sort === "votes") {
-      prompts.sort(
-        (a, b) =>
-          b.votes.reduce((sum, v) => sum + v.vote, 0) -
-          a.votes.reduce((sum, v) => sum + v.vote, 0)
-      );
-    } else if (sort === "desc") {
-      prompts.sort((a, b) => b.createdAt - a.createdAt);
-    } else {
-      prompts.sort((a, b) => a.createdAt - b.createdAt);
-    }
 
     return new Response(JSON.stringify(prompts), { status: 200 });
   } catch (error) {

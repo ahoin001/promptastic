@@ -48,7 +48,7 @@ const CreatePrompt = () => {
           color: "teal",
         });
 
-        router.push("/");
+        router.push("/profile");
       }
     } catch (error) {
       console.log(error);
