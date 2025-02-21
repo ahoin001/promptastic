@@ -29,7 +29,7 @@ const UserSchema = new Schema({
     type: String,
     // default: "/assets/images/default-profile.jpg",
   },
-  createdAt: { type: Date, default: Date.now() },
+  createdAt: { type: Date, default: () => Date.now() },
 });
 
 UserSchema.virtual("fullName").get(function () {

@@ -11,7 +11,7 @@ const TagSchema = new Schema({
     trim: true,
     required: [true, "Tag name is required"],
   },
-  createdAt: { type: Date, default: Date.now() },
+  createdAt: { type: Date, default: () => Date.now() },
 });
 
 const Tag = models.Tag || model("Tag", TagSchema);

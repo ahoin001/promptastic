@@ -1,21 +1,31 @@
 import PromptCard from "./PromptCard";
-import { Group, Skeleton } from "@mantine/core";
+import { Group, Loader, SimpleGrid, Stack, Text } from "@mantine/core";
 
 const PromptCardList = ({ data, loading, handleTagClick }) => {
+  if (loading) {
+    return (
+      <Group justify="center">
+        <Loader size="xl" />
+      </Group>
+    );
+  }
+
   return (
-    <div className="space-y-6 sm:columns-2 sm:gap-6 xl:columns-3">
+    <div>
       {data.length ? (
-        data.map((post) => {
-          return (
-            <PromptCard
-              key={post._id}
-              post={post}
-              handleTagClick={handleTagClick}
-            />
-          );
-        })
+        <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} className="space-y-68">
+          {data.map((post) => {
+            return (
+              <PromptCard
+                key={post._id}
+                post={post}
+                handleTagClick={handleTagClick}
+              />
+            );
+          })}
+        </SimpleGrid>
       ) : (
-        <Group position="center">No posts found</Group>
+        <Text ta="center">No posts found</Text>
       )}
     </div>
   );

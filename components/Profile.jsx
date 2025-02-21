@@ -1,5 +1,5 @@
 import PromptCard from "@components/Prompt/PromptCard";
-import { Skeleton } from "@mantine/core";
+import { Skeleton, Loader } from "@mantine/core";
 
 const Profile = ({
   deletingPost,
@@ -22,7 +22,7 @@ const Profile = ({
       >
         <div className="mt-10 prompt_layout">
           {posts.length === 0 ? (
-            <p>No prompts found</p>
+            <Loader size="xl" />
           ) : (
             posts.map((post) => (
               <PromptCard

@@ -38,7 +38,7 @@ const Feed = () => {
   };
 
   return (
-    <>
+    <div>
       <section className="mt-16">
         <form className="relative w-full max-w-xl mx-auto">
           <TextInput
@@ -71,12 +71,12 @@ const Feed = () => {
             clearable
           />
         </Group>
-
-        <Group mt={32}>
-          <PromptCardList data={posts} loading={isPending} />
-        </Group>
       </section>
-    </>
+
+      <Group mt={32}>
+        <PromptCardList data={posts} loading={isPending} />
+      </Group>
+    </div>
   );
 };
 
