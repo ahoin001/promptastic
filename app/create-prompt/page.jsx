@@ -3,9 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-
 import { notifications } from "@mantine/notifications";
-
 import Form from "@components/Form";
 
 const CreatePrompt = () => {
@@ -13,45 +11,44 @@ const CreatePrompt = () => {
   const { data: session } = useSession();
 
   const [loading, setLoading] = useState(false);
-  const [post, setPost] = useState({
-    prompt: "",
-    tag: "",
-  });
-
+  const [post, setPost] = useState({ prompt: "", tag: "" });
   const [tags, setTags] = useState([]);
 
   const createPrompt = async (e) => {
     e.preventDefault();
+    if (loading) return;
     setLoading(true);
 
     try {
       const res = await fetch("/api/prompt/new", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           prompt: post.prompt,
           tags: tags,
           user: session?.user.id ?? null,
         }),
       });
+
+      if (!res.ok) throw new Error("Failed to create prompt");
+
       const data = await res.json();
       console.log("createPrompt: ", data);
 
-      if (res.ok) {
-        setLoading(false);
+      notifications.show({
+        title: "Success",
+        message: "New prompt has been created.",
+        color: "teal",
+      });
 
-        notifications.show({
-          title: `Success`,
-          message: `New prompt has been created.`,
-          color: "teal",
-        });
-
-        router.push("/profile");
-      }
+      router.push("/profile");
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      notifications.show({
+        title: "Error",
+        message: "Failed to create prompt. Please try again.",
+        color: "red",
+      });
     } finally {
       setLoading(false);
     }

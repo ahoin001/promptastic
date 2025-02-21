@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 import { notifications } from "@mantine/notifications";
 
 import Profile from "@components/Profile";
+import { useUserPosts } from "@hooks/useUserPosts";
 
 const MyProfile = () => {
   const router = useRouter();
@@ -16,22 +16,14 @@ const MyProfile = () => {
 
   const {
     data: posts = [],
-    error,
     isPending,
-    status,
     refetch,
-  } = useQuery({
-    queryKey: ["userPosts", session?.user.id],
-    queryFn: async () => {
-      const response = await fetch(`/api/users/${session?.user.id}/posts`);
-      if (!response.ok) throw new Error("Problem fetching posts");
-      return response.json();
-    },
-    enabled: !!session?.user.id, // Only fetch if the user is available
-  });
+  } = useUserPosts(session?.user?.id);
 
-  const handleDelete = async (postId) => {
-    if (postId) {
+  const handleDelete = useCallback(
+    async (postId) => {
+      if (!postId) return;
+
       try {
         setLoading(true);
 
@@ -50,23 +42,29 @@ const MyProfile = () => {
             message: res.message,
           });
           refetch();
+        } else {
+          throw new Error(res.message || "Problem deleting post");
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
         notifications.show({
           title: "Error",
-          message: "Problem deleting post",
-          color: "teal",
+          message: error.message || "Problem deleting post",
+          color: "red",
         });
       } finally {
         setLoading(false);
       }
-    }
-  };
+    },
+    [refetch]
+  );
 
-  const handleEdit = async (postId) => {
-    router.push(`update-prompt?id=${postId}`);
-  };
+  const handleEdit = useCallback(
+    (postId) => {
+      router.push(`update-prompt?id=${postId}`);
+    },
+    [router]
+  );
 
   return (
     <Profile

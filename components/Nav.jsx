@@ -1,18 +1,15 @@
 "use client";
-
-import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 import { useState, useEffect } from "react";
 import { signIn, signOut, getProviders, useSession } from "next-auth/react";
-import { Avatar, Button } from "@mantine/core";
+import { Avatar, Button, Menu } from "@mantine/core";
 
 const Nav = () => {
   const { data: session } = useSession();
 
   const [providers, setProviders] = useState(null);
-  const [toggleDropdown, setToggleDropdown] = useState(false);
 
   useEffect(() => {
     const setUpProviders = async () => {
@@ -92,43 +89,39 @@ const Nav = () => {
       <div className="flex relative sm:hidden">
         {session?.user ? (
           <div className="flex">
-            <Image
-              src={session?.user.image}
-              width={30}
-              height={30}
-              className="rounded-full"
-              alt="profile"
-              onClick={() => setToggleDropdown((prev) => !prev)}
-            />
+            <Menu shadow="md" width={200}>
+              <Menu.Target>
+                <Image
+                  src={session?.user.image}
+                  width={30}
+                  height={30}
+                  className="rounded-full"
+                  alt="profile"
+                />
+              </Menu.Target>
 
-            {toggleDropdown && (
-              <div className="dropdown">
-                <Link
+              <Menu.Dropdown>
+                <Menu.Label>Actions</Menu.Label>
+                <Menu.Item
+                  component={Link}
                   href="/profile"
                   className="dropdown_link"
-                  onClick={() => setToggleDropdown(false)}
                 >
                   My Profile
-                </Link>
-                <Link
-                  href="/create_prompt"
-                  className="dropdown_link"
-                  onClick={() => setToggleDropdown(false)}
-                >
+                </Menu.Item>
+                <Menu.Item component={Link} href="/create-prompt">
                   Create prompt
-                </Link>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setToggleDropdown(false);
-                    signOut;
-                  }}
-                  className="w-full mt-5 black_btn"
+                </Menu.Item>
+                <Menu.Item
+                  component={Button}
+                  color="black"
+                  variant="outline"
+                  onClick={signOut}
                 >
                   Sign out
-                </button>
-              </div>
-            )}
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
           </div>
         ) : (
           <>

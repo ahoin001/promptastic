@@ -1,6 +1,6 @@
 import { connectToDatabase } from "@utils/database";
 import Prompt from "@models/prompt";
-import Tag from "@models/Tag";
+import Tag from "@models/tag";
 
 export const DELETE = async (req, { params }) => {
   try {
