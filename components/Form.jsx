@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { Button, TagsInput } from "@mantine/core";
-import { useQuery } from "@tanstack/react-query";
+import { useTags } from "@hooks/useTags";
 
 const Form = ({
   loading,
@@ -12,13 +12,7 @@ const Form = ({
   setTags,
   type,
 }) => {
-  const { data: allTags = [] } = useQuery({
-    queryKey: ["tags"],
-    queryFn: async () => {
-      const response = await fetch(`api/tags/all`);
-      return response.json();
-    },
-  });
+  const { data: allTags = [] } = useTags();
 
   const formattedAvailableTags = allTags.length
     ? allTags.map((tag) => tag.name)
