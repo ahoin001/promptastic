@@ -1,38 +1,23 @@
 "use client";
 
 import { useDisclosure } from "@mantine/hooks";
-import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
 
 import Image from "next/image";
 
-import {
-  Avatar,
-  Badge,
-  Box,
-  Button,
-  Group,
-  Modal,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Avatar, Badge, Box, Button, Group, Modal, Text } from "@mantine/core";
+import Link from "next/link";
+import { usePostActions } from "@hooks/usePostActions";
 
-const PromptCard = ({ post, handleDelete, handleEdit, handleTagClick }) => {
-  const [opened, { open, close }] = useDisclosure(false);
-  const pathName = usePathname();
-
+const PromptCard = ({ post, handleTagClick }) => {
   const { data: session } = useSession();
 
-  const [copiedPrompt, setCopiedPrompt] = useState("");
+  const [opened, { open, close }] = useDisclosure(false);
 
-  const handleCopy = () => {
-    setCopiedPrompt(post.prompt);
-    navigator.clipboard.writeText(post.prompt);
-    setTimeout(() => {
-      setCopiedPrompt("");
-    }, 3000);
-  };
+  const isBeingViewedByOwner = post.user._id === session?.user?.id;
+
+  const { copiedPrompt, handleCopy, handleDelete, handleEdit } =
+    usePostActions();
 
   const onConfirmDelete = (postId) => {
     close();
@@ -46,7 +31,10 @@ const PromptCard = ({ post, handleDelete, handleEdit, handleTagClick }) => {
 
   return (
     <div className="prompt_card">
-      <div className="flex justify-between items-start gap-5">
+      <Link
+        href={`/profile/${post.user._id}`}
+        className="flex justify-between items-start gap-5"
+      >
         <div className="flex flex-1 justify-start items-center gap-3 cursor-pointer">
           {/* TODO where do they get image from? */}
           {/* src={post.user.image} */}
@@ -69,11 +57,11 @@ const PromptCard = ({ post, handleDelete, handleEdit, handleTagClick }) => {
           className={`copy_btn ${
             copiedPrompt === post.prompt ? "" : "cursor-pointer"
           }`}
-          onClick={handleCopy}
+          onClick={() => handleCopy(post)}
         >
           <Image src={iconUrl} alt="copy icon" width={16} height={16} />
         </div>
-      </div>
+      </Link>
 
       <p className="my-4 font-satoshi text-sm text-gray-700">{post.prompt}</p>
 
@@ -94,7 +82,8 @@ const PromptCard = ({ post, handleDelete, handleEdit, handleTagClick }) => {
         })}
       </Group>
 
-      {session?.user.id === post.user._id && pathName === "/profile" && (
+      {/* Make sure users can't crud other users stuff */}
+      {isBeingViewedByOwner && (
         <div className="mt-5 flex justify-end gap-4 border-t border-gray-200 pt-4">
           <p
             className="font-inter text-sm green_gradient cursor-pointer"
@@ -111,9 +100,6 @@ const PromptCard = ({ post, handleDelete, handleEdit, handleTagClick }) => {
         </div>
       )}
 
-      {/* overlayOpacity={0.75} */}
-      {/* overlayBlur={3} */}
-      {/* transitionDuration={400} */}
       <Modal
         opened={opened}
         onClose={close}
