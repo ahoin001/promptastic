@@ -50,7 +50,7 @@ const Feed = () => {
       </section>
 
       <Group mt={32}>
-        <PromptCardList data={posts} loading={isPending} />
+        <PromptCardList posts={posts} loading={isPending} />
       </Group>
     </div>
   );
