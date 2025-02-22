@@ -24,56 +24,43 @@ const UserFeed = ({ userId }) => {
   });
 
   return (
-    <div>
-      {isPending ? (
-        <Group justify="center">
-          <Loader />
+    <section>
+      <form className="relative w-full max-w-xl mx-auto">
+        <TextInput
+          radius="lg"
+          size="lg"
+          className="w-full"
+          placeholder="Search for tag or user name"
+          defaultValue={search}
+          onChange={(e) => updateQueryParams("search", e.target.value)}
+        />
+      </form>
+
+      <div className="mt-12 mb-8">
+        <Group mt={16}>
+          <Select
+            label="Tag"
+            value={selectedTag}
+            onChange={(value) => updateQueryParams("tag", value)}
+            data={formattedTagsForSelect}
+            clearable
+          />
+
+          <Select
+            label="Time"
+            value={sort}
+            onChange={(value) => updateQueryParams("sort", value)}
+            data={[
+              { value: "desc", label: "Latest" },
+              { value: "asc", label: "Oldest" },
+            ]}
+            clearable
+          />
         </Group>
-      ) : (
-        <>
-          <section className="mt-16 mb-8">
-            <form className="relative w-full max-w-xl mx-auto">
-              <TextInput
-                radius="lg"
-                size="lg"
-                className="w-full"
-                placeholder="Search for tag or user name"
-                defaultValue={search}
-                onChange={(e) => updateQueryParams("search", e.target.value)}
-              />
-            </form>
+      </div>
 
-            <Group mt={16}>
-              <Select
-                label="Tag"
-                value={selectedTag}
-                onChange={(value) => updateQueryParams("tag", value)}
-                data={formattedTagsForSelect}
-                clearable
-              />
-
-              <Select
-                label="Time"
-                value={sort}
-                onChange={(value) => updateQueryParams("sort", value)}
-                data={[
-                  { value: "desc", label: "Latest" },
-                  { value: "asc", label: "Oldest" },
-                ]}
-                clearable
-              />
-            </Group>
-          </section>
-
-          {/* Correctly positioned second ternary statement */}
-          {posts.length ? (
-            <PromptCardList data={posts} />
-          ) : (
-            <Text ta="center">No posts found</Text>
-          )}
-        </>
-      )}
-    </div>
+      <PromptCardList posts={posts} loading={isPending} />
+    </section>
   );
 };
 
