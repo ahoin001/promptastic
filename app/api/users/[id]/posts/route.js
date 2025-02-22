@@ -37,8 +37,6 @@ export const GET = async (req, { params }) => {
       sortOption = { createdAt: 1 };
     }
 
-    console.log("&&&&&&&&&&&&: ", tagFilter);
-
     const prompts = await Prompt.find(query)
       .populate("user")
       .populate("tags")
