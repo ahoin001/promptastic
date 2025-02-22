@@ -1,0 +1,46 @@
+import { useTags } from "@hooks/useTags";
+import { Group, Select, TextInput } from "@mantine/core";
+
+const PostFilters = ({ search, selectedTag, sort, updateQueryParams }) => {
+  const { formattedTagsForSelect } = useTags();
+
+  return (
+    <div>
+      <form className="relative w-full max-w-xl mx-auto">
+        <TextInput
+          radius="lg"
+          size="lg"
+          className="w-full"
+          placeholder="Search for tag or user name"
+          defaultValue={search}
+          onChange={(e) => updateQueryParams("search", e.target.value)}
+        />
+      </form>
+
+      <div className="mt-12 mb-8">
+        <Group mt={16}>
+          <Select
+            label="Tag"
+            value={selectedTag}
+            onChange={(value) => updateQueryParams("tag", value)}
+            data={formattedTagsForSelect}
+            clearable
+          />
+
+          <Select
+            label="Time"
+            value={sort}
+            onChange={(value) => updateQueryParams("sort", value)}
+            data={[
+              { value: "desc", label: "Latest" },
+              { value: "asc", label: "Oldest" },
+            ]}
+            clearable
+          />
+        </Group>
+      </div>
+    </div>
+  );
+};
+
+export default PostFilters;
