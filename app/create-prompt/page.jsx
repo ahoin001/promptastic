@@ -41,7 +41,7 @@ const CreatePrompt = () => {
         color: "teal",
       });
 
-      router.push("/profile");
+      router.push(`/profile/${session?.user.id}`);
     } catch (error) {
       console.error(error);
       notifications.show({

@@ -3,39 +3,15 @@
 import { Group, Select, TextInput } from "@mantine/core";
 import PromptCardList from "@components/Prompt/PromptCardList";
 import { usePosts } from "@hooks/usePosts";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { usePostFilters } from "@hooks/usePostFilters";
 import { useTags } from "@hooks/useTags";
 
 const Feed = () => {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const router = useRouter();
-
-  // Use URL as state, easier refreshing, back and forth traversal and link sharing
-  const search = searchParams.get("search") || "";
-  const tag = searchParams.get("tag") || "";
-  const sort = searchParams.get("sort") || "desc";
+  const { search, sort, tag, updateQueryParams } = usePostFilters();
 
   const { data: posts = [], isPending } = usePosts(search, tag, sort);
 
-  const { data: allTags = [] } = useTags();
-
-  const formattedTags = [
-    { value: "", label: "Any" },
-    ...allTags.map((tag) => {
-      return { value: tag.name, label: tag.name };
-    }),
-  ];
-
-  const updateQueryParams = (key, value) => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (value) {
-      params.set(key, value);
-    } else {
-      params.delete(key);
-    }
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-  };
+  const { formattedTagsForSelect } = useTags();
 
   return (
     <div>
@@ -56,7 +32,7 @@ const Feed = () => {
             label="Tag"
             value={tag}
             onChange={(value) => updateQueryParams("tag", value)}
-            data={formattedTags}
+            data={formattedTagsForSelect}
             clearable
           />
 

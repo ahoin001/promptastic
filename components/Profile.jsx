@@ -1,40 +1,19 @@
-import PromptCard from "@components/Prompt/PromptCard";
-import { Skeleton, Loader } from "@mantine/core";
+import { useGetUser } from "@hooks/useGetUser";
+import { useSession } from "next-auth/react";
+import UserFeed from "./user/UserFeed";
 
-const Profile = ({
-  deletingPost,
-  description,
-  fetchingUserPosts,
-  name,
-  posts,
-  handleDelete,
-  handleEdit,
-}) => {
+const Profile = ({ description, profileId }) => {
+  const { data: session } = useSession();
+
+  const isOwner = session?.user?.id === profileId;
+
   return (
     <section className="w-full">
-      <h1 className="head_text text-left">{name} Profile</h1>
-      <p className="desc text-left">{description}</p>
-
-      <Skeleton
-        visible={fetchingUserPosts || deletingPost}
-        width="100%"
-        height={600}
-      >
-        <div className="mt-10 prompt_layout">
-          {posts.length === 0 ? (
-            <Loader size="xl" />
-          ) : (
-            posts.map((post) => (
-              <PromptCard
-                key={post._id}
-                post={post}
-                handleDelete={handleDelete}
-                handleEdit={handleEdit}
-              />
-            ))
-          )}
-        </div>
-      </Skeleton>
+      <h1 className="head_text text-left">{isOwner ? "My" : ``} Profile</h1>
+      <p className="desc text-left">{isOwner ? description : ""}</p>
+      <div className="mt-10">
+        <UserFeed userId={profileId} />
+      </div>
     </section>
   );
 };

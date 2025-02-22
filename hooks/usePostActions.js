@@ -1,24 +1,20 @@
-"use client";
-
-import { useState, useCallback, useEffect } from "react";
+// CRUD
+import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
-
 import { notifications } from "@mantine/notifications";
 
-import Profile from "@components/Profile";
-import { useUserPosts } from "@hooks/useUserPosts";
-
-const MyProfile = () => {
-  const router = useRouter();
-  const { data: session } = useSession();
+export const usePostActions = (refetch) => {
+  const [copiedPrompt, setCopiedPrompt] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
-  const {
-    data: posts = [],
-    isPending,
-    refetch,
-  } = useUserPosts(session?.user?.id);
+  const handleCopy = (post) => {
+    setCopiedPrompt(post.prompt);
+    navigator.clipboard.writeText(post.prompt);
+    setTimeout(() => {
+      setCopiedPrompt("");
+    }, 3000);
+  };
 
   const handleDelete = useCallback(
     async (postId) => {
@@ -41,7 +37,7 @@ const MyProfile = () => {
             title: "Success",
             message: res.message,
           });
-          refetch();
+          //   refetch();
         } else {
           throw new Error(res.message || "Problem deleting post");
         }
@@ -61,22 +57,16 @@ const MyProfile = () => {
 
   const handleEdit = useCallback(
     (postId) => {
-      router.push(`update-prompt?id=${postId}`);
+      router.push(`/update-prompt?id=${postId}`);
     },
     [router]
   );
 
-  return (
-    <Profile
-      description="Welcome to your personalized profile page"
-      fetchingUserPosts={isPending}
-      deletingPost={loading}
-      name="My"
-      posts={posts}
-      handleDelete={handleDelete}
-      handleEdit={handleEdit}
-    />
-  );
+  return {
+    copiedPrompt,
+    loading,
+    handleCopy,
+    handleDelete,
+    handleEdit,
+  };
 };
-
-export default MyProfile;

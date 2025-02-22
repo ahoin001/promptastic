@@ -33,7 +33,7 @@ const Nav = () => {
         <h1 className="logo_text">Promptastic</h1>
       </Link>
 
-      {/* Mobile Nav */}
+      {/* Desktop Nav */}
       <div className="hidden sm:flex">
         {session?.user ? (
           <div className="flex gap-3 md:gap-5">
@@ -56,7 +56,7 @@ const Nav = () => {
               Sign out
             </Button>
 
-            <Link href="/profile">
+            <Link href={`profile/${session?.user.id}`}>
               <Avatar
                 src={session?.user.image}
                 width={37}
