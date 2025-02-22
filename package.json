@@ -14,6 +14,7 @@
     "@mantine/hooks": "^7.17.0",
     "@mantine/notifications": "^7.17.0",
     "@tanstack/react-query": "^5.66.5",
+    "@tanstack/react-query-devtools": "^5.66.9",
     "bcrypt": "^5.1.1",
     "escape-string-regexp": "^5.0.0",
     "mongodb": "^6.13.0",
