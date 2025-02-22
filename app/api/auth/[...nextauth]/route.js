@@ -1,7 +1,7 @@
 import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
 import NextAuth from "next-auth";
 import User from "@models/user";
-
 import { connectToDatabase } from "@utils/database";
 
 const handler = NextAuth({
@@ -9,6 +9,24 @@ const handler = NextAuth({
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+    CredentialsProvider({
+      name: "Sign in with Email and Password",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        await connectToDatabase();
+
+        const user = await User.findOne({ email: credentials.email });
+
+        if (user && user.password === credentials.password) {
+          return user;
+        } else {
+          return null;
+        }
+      },
     }),
   ],
   callbacks: {
@@ -18,19 +36,20 @@ const handler = NextAuth({
       session.user.id = sessionUser._id.toString();
       return session;
     },
-    async signIn({ profile }) {
+    async signIn({ user, account, profile, email, credentials }) {
       try {
-        // severless -> lambda -> dynamodb
         await connectToDatabase();
 
-        const userExists = await User.findOne({ email: profile.email });
+        if (account.provider === "google") {
+          const userExists = await User.findOne({ email: profile.email });
 
-        if (!userExists) {
-          await User.create({
-            email: profile.email,
-            username: profile.name.replace(" ", "").toLowerCase(),
-            image: profile.picture,
-          });
+          if (!userExists) {
+            await User.create({
+              email: profile.email,
+              username: profile.name.replace(" ", "").toLowerCase(),
+              image: profile.picture,
+            });
+          }
         }
 
         return true;
