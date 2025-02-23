@@ -17,11 +17,6 @@ export const useUserPosts = (userId, { search, sort, selectedTag }) => {
 const fetchUserPosts = async ({ queryKey }) => {
   const [_key, { userId, debouncedSearchValue, selectedTag, sort }] = queryKey;
 
-  console.log("query", queryKey);
-  console.log("useerid", userId);
-  console.log("selectedTag", selectedTag);
-  console.log("debounc", debouncedSearchValue);
-
   const response = await fetch(
     `/api/users/${userId}/posts?search=${debouncedSearchValue}&tag=${selectedTag}&sort=${sort}`
   );

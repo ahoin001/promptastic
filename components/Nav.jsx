@@ -112,7 +112,7 @@ const Nav = () => {
           <div className="flex">
             <Menu shadow="md" width={200}>
               <Menu.Target>
-                <Image
+                <Avatar
                   src={session?.user.image}
                   width={30}
                   height={30}

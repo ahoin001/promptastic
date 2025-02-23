@@ -11,7 +11,7 @@ const PostFilters = ({ search, selectedTag, sort, updateQueryParams }) => {
           radius="lg"
           size="lg"
           className="w-full"
-          placeholder="Search for tag or user name"
+          placeholder="Search by prompt or tag"
           defaultValue={search}
           onChange={(e) => updateQueryParams("search", e.target.value)}
         />

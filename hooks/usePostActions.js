@@ -1,4 +1,3 @@
-// CRUD
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { notifications } from "@mantine/notifications";
@@ -37,7 +36,6 @@ export const usePostActions = (refetch) => {
             title: "Success",
             message: res.message,
           });
-          //   refetch();
         } else {
           throw new Error(res.message || "Problem deleting post");
         }

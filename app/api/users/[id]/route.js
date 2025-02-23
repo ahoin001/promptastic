@@ -6,7 +6,7 @@ export const GET = async (req, { params }) => {
     await connectToDatabase();
     const { id } = await params;
 
-    const user = await User.find({
+    const user = await User.findOne({
       user: id,
     });
 

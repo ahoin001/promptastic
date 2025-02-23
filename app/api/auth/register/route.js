@@ -5,9 +5,8 @@ import { NextResponse } from "next/server";
 
 export async function POST(request) {
   try {
-    const { email, password } = await request.json();
+    const { email, username, password } = await request.json();
 
-    // Validate email and password
     if (!email || !password) {
       return NextResponse.json(
         { message: "Email and password are required" },
@@ -26,20 +25,21 @@ export async function POST(request) {
       );
     }
 
-    // Hash the password
     const hashedPassword = await hash(password, 10);
 
-    // // Create a new user
     const newUser = new User({
       email,
+      username,
       password: hashedPassword,
     });
 
-    // // Save the user to the database
+    // Save the user to the database
     await newUser.save();
+
+    return NextResponse.json({ message: "Account created" }, { status: 200 });
   } catch (e) {
     console.log({ e });
   }
 
-  return NextResponse.json({ message: "success" });
+  return NextResponse.json({ message: "Account registered successfully" });
 }
