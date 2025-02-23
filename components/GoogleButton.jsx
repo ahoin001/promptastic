@@ -1,6 +1,6 @@
 import React from "react";
 
-const GoogleButton = () => {
+const GoogleButton = ({ label }) => {
   return (
     <button className="gsi-material-button">
       <div className="gsi-material-button-state"></div>
@@ -31,10 +31,8 @@ const GoogleButton = () => {
             <path fill="none" d="M0 0h48v48H0z"></path>
           </svg>
         </div>
-        <span className="gsi-material-button-contents">
-          Continue with Google
-        </span>
-        <span className="hidden">Continue with Google</span>
+        <span className="gsi-material-button-contents">{label}</span>
+        <span className="hidden">{label}</span>
       </div>
     </button>
   );

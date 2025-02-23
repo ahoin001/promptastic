@@ -1,22 +1,28 @@
 "use client";
 
 import GoogleButton from "@components/GoogleButton";
+import Link from "@node_modules/next/link";
+
 import {
   Card,
-  Divider,
   Text,
   TextInput,
   Button,
   Group,
   Stack,
+  Divider,
 } from "@mantine/core";
-import { useForm } from "@mantine/form";
-import Link from "next/link";
+
+import { notifications } from "@mantine/notifications";
 import { signIn } from "next-auth/react";
+import { useAuth } from "@hooks/useAuth";
+import { useForm } from "@mantine/form";
 import { useRouter } from "next/navigation";
 
-const LoginPage = () => {
+const LoginForm = () => {
+  const { login } = useAuth();
   const router = useRouter();
+
   const form = useForm({
     initialValues: {
       email: "",
@@ -24,30 +30,26 @@ const LoginPage = () => {
     },
     validate: {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+      password: (value) =>
+        value?.length < 2 ? "Name must have at least 2 letters" : null,
+      username: (value) =>
+        value?.length < 2 ? "Name must have at least 2 letters" : null,
     },
   });
 
-  const handleSubmit = async () => {
-    console.log("Submitting form", form.data);
-
+  const handleSubmit = async (data) => {
     const { email, password } = data;
 
     try {
-      const result = await signIn("credentials", {
-        redirect: false,
-        email,
-        password,
-      });
-
-      if (result.error) {
-        throw new Error(result.error);
-      }
-
-      console.log("Login Successful", result);
-      router.push("/"); // Redirect to home page or any other page
+      login(email, password);
+      router.push("/");
     } catch (error) {
       console.error("Login Failed:", error);
-      // Handle error (e.g., show a toast notification)
+      notifications.show({
+        title: "Error",
+        message: "Login Failed!",
+        color: "red",
+      });
     }
   };
 
@@ -59,8 +61,7 @@ const LoginPage = () => {
             Login
           </Text>
         </Group>
-
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack>
             <TextInput
               mt="md"
@@ -72,7 +73,6 @@ const LoginPage = () => {
             <TextInput
               label="Password"
               placeholder="Password"
-              type="password"
               {...form.getInputProps("password")}
             />
           </Stack>
@@ -83,26 +83,22 @@ const LoginPage = () => {
             </Button>
           </Group>
         </form>
+        <Group justify="center" mt={28}>
+          <Link href="/login" className="hover:underline hover:cursor-pointer">
+            <Text>Already have an account? Login</Text>
+          </Link>
+        </Group>
 
         <Divider my="md" label="or" labelPosition="center" />
 
         <Group justify="center">
           <div onClick={() => signIn("google")}>
-            <GoogleButton />
+            <GoogleButton label="Signup with Google" />
           </div>
-        </Group>
-
-        <Group justify="center" mt={28}>
-          <Link
-            href="/register"
-            className="hover:underline hover:cursor-pointer"
-          >
-            Don't have an account? Sign up!
-          </Link>
         </Group>
       </Card>
     </div>
   );
 };
 
-export default LoginPage;
+export default LoginForm;
