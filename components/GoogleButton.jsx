@@ -31,8 +31,10 @@ const GoogleButton = ({ label }) => {
             <path fill="none" d="M0 0h48v48H0z"></path>
           </svg>
         </div>
-        <span className="gsi-material-button-contents">{label}</span>
-        <span className="hidden">{label}</span>
+        <span className="gsi-material-button-contents">
+          Continue with Google
+        </span>
+        <span className="hidden">Continue with Google</span>
       </div>
     </button>
   );

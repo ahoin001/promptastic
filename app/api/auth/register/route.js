@@ -7,14 +7,24 @@ export async function POST(request) {
   try {
     const { email, username, password } = await request.json();
 
-    if (!email || !password) {
-      return NextResponse.json(
-        { message: "Email and password are required" },
-        { status: 400 }
-      );
+    const errors = {};
+
+    if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+      errors.email = "Invalid email";
     }
 
-    console.log({ email, password });
+    if (!username || username.length < 3) {
+      errors.username = "Username must be at least 3 characters";
+    }
+
+    if (!password || password.length < 3) {
+      errors.password = "Password must be at least 3 characters";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      return NextResponse.json({ errors }, { status: 400 });
+    }
+
     await connectToDatabase();
 
     const existingUser = await User.findOne({ email });
@@ -33,7 +43,6 @@ export async function POST(request) {
       password: hashedPassword,
     });
 
-    // Save the user to the database
     await newUser.save();
 
     return NextResponse.json({ message: "Account created" }, { status: 200 });

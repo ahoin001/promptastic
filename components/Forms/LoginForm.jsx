@@ -17,11 +17,9 @@ import { notifications } from "@mantine/notifications";
 import { signIn } from "next-auth/react";
 import { useAuth } from "@hooks/useAuth";
 import { useForm } from "@mantine/form";
-import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
   const { login } = useAuth();
-  const router = useRouter();
 
   const form = useForm({
     initialValues: {
@@ -42,7 +40,6 @@ const LoginForm = () => {
 
     try {
       login(email, password);
-      router.push("/");
     } catch (error) {
       console.error("Login Failed:", error);
       notifications.show({
@@ -78,8 +75,14 @@ const LoginForm = () => {
           </Stack>
 
           <Group justify="center" mt="xl">
-            <Button type="submit" disabled={!form.isValid()}>
-              Submit
+            <Button
+              type="submit"
+              disabled={!form.isValid()}
+              radius="xl"
+              variant="gradient"
+              gradient={{ from: "red", to: "orange", deg: 90 }}
+            >
+              Login
             </Button>
           </Group>
         </form>
@@ -93,7 +96,7 @@ const LoginForm = () => {
 
         <Group justify="center">
           <div onClick={() => signIn("google")}>
-            <GoogleButton label="Signup with Google" />
+            <GoogleButton />
           </div>
         </Group>
       </Card>

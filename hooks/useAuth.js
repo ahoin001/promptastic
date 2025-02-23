@@ -9,7 +9,7 @@ export function useAuth() {
    */
   const login = async (email, password) => {
     const result = await signIn("credentials", {
-      redirect: false,
+      redirectTo: "/",
       email,
       password,
     });

@@ -17,11 +17,9 @@ import { notifications } from "@mantine/notifications";
 import { signIn } from "next-auth/react";
 import { useAuth } from "@hooks/useAuth";
 import { useForm } from "@mantine/form";
-import { useRouter } from "next/navigation";
 
 const SignUpForm = () => {
   const { login } = useAuth();
-  const router = useRouter();
 
   const form = useForm({
     initialValues: {
@@ -30,7 +28,12 @@ const SignUpForm = () => {
       password: "",
     },
     validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+      email: (value) =>
+        /^\S+@\S+\.\S+$/.test(value) ? null : "Invalid email address",
+      username: (value) =>
+        value.length >= 3 ? null : "Username must be at least 3 characters",
+      password: (value) =>
+        value.length >= 3 ? null : "Password must be at least 3 characters",
     },
   });
 
@@ -46,25 +49,35 @@ const SignUpForm = () => {
         body: JSON.stringify({ email, username, password }),
       });
 
+      const result = await response.json();
+
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        if (result.errors) {
+          // Handle multiple field errors from API
+          form.setErrors(result.errors);
+        } else {
+          notifications.show({
+            title: "Error",
+            message: result.message || "Registration failed",
+            color: "red",
+          });
+        }
+        return;
       }
 
       if (response.ok) {
-        const { message } = await response.json();
+        const { message } = result;
         notifications.show({
           title: "Success",
           message,
         });
+        login(email, password);
       }
-
-      login(email, password);
-      router.push("/");
     } catch (error) {
       console.error("Registration Failed:", error);
       notifications.show({
         title: "Error",
-        message: "Registration Failed!",
+        message: error.message,
         color: "red",
       });
     }
@@ -84,25 +97,36 @@ const SignUpForm = () => {
               mt="md"
               label="Username"
               placeholder="Username for account"
+              error={form.errors.username}
+              withAsterisk
               {...form.getInputProps("username")}
             />
 
             <TextInput
+              withAsterisk
               mt="md"
               label="Email"
               placeholder="Email"
+              error={form.errors.email}
               {...form.getInputProps("email")}
             />
 
             <TextInput
+              withAsterisk
               label="Password"
               placeholder="Password"
+              error={form.errors.password}
               {...form.getInputProps("password")}
             />
           </Stack>
 
           <Group justify="center" mt="xl">
-            <Button type="submit" disabled={!form.isValid()}>
+            <Button
+              type="submit"
+              radius="xl"
+              variant="gradient"
+              gradient={{ from: "red", to: "orange", deg: 90 }}
+            >
               Submit
             </Button>
           </Group>
@@ -117,7 +141,7 @@ const SignUpForm = () => {
 
         <Group justify="center">
           <div onClick={() => signIn("google")}>
-            <GoogleButton label="Signup with Google" />
+            <GoogleButton />
           </div>
         </Group>
       </Card>
