@@ -36,7 +36,7 @@ export const GET = async (req) => {
     }
 
     const prompts = await Prompt.find(query)
-      .populate("user", "username")
+      .populate("user")
       .populate("tags", "name")
       .select("prompt createdAt")
       .sort(sortOption)

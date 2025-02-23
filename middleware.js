@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
+import { NextResponse } from "next/server";
 
 export async function middleware(req) {
   const token = await getToken({ req });
-  const protectedRoutes = ["/update-prompt", "/create-prompt", "/profile"];
+  const protectedRoutes = ["/update-prompt", "/create-prompt"];
 
   if (
     !token &&
@@ -17,5 +17,5 @@ export async function middleware(req) {
 
 // Apply middleware only to specific routes
 export const config = {
-  matcher: ["/create-prompt", "/update-prompt", "/profile"], // Add more protected routes here
+  matcher: ["/create-prompt", "/update-prompt"], // Add more protected routes here
 };

@@ -1,8 +1,6 @@
-import escapeStringRegexp from "escape-string-regexp";
-
 import { connectToDatabase } from "@utils/database";
 
-import Tag from "@models/Tag";
+import Tag from "@models/tag";
 
 export const GET = async (req) => {
   try {

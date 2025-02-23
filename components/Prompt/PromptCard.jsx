@@ -9,7 +9,7 @@ import { Avatar, Badge, Box, Button, Group, Modal, Text } from "@mantine/core";
 import Link from "next/link";
 import { usePostActions } from "@hooks/usePostActions";
 
-const PromptCard = ({ post, handleTagClick }) => {
+const PromptCard = ({ post }) => {
   const { data: session } = useSession();
 
   const [opened, { open, close }] = useDisclosure(false);
@@ -69,13 +69,7 @@ const PromptCard = ({ post, handleTagClick }) => {
         {/* TODO make tag click return filtered tag list */}
         {post.tags.map((tag) => {
           return (
-            <Badge
-              key={tag._id}
-              color="yellow"
-              size="lg"
-              radius="md"
-              onClick={() => handleTagClick && handleTagClick(tag._id)}
-            >
+            <Badge key={tag._id} color="yellow" size="lg" radius="md">
               #{tag.name}
             </Badge>
           );
