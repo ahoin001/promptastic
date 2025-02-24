@@ -61,7 +61,7 @@ const handler = NextAuth({
 
         if (account?.provider === "google") {
           console.log("GOOGLE TIME: ", account);
-          console.log("GOOGLE Profile: ", pro);
+          console.log("GOOGLE Profile: ", profile);
           const userExists = await User.findOne({ email: profile.email });
           if (!userExists) {
             console.log("USER DIDNT EXIST Profile: ", pro);
