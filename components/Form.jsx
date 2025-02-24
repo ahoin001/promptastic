@@ -12,11 +12,7 @@ const Form = ({
   setTags,
   type,
 }) => {
-  const { data: allTags = [] } = useTags();
-
-  const formattedAvailableTags = allTags.length
-    ? allTags.map((tag) => tag.name)
-    : [];
+  const { formattedTagsForSelect } = useTags(false);
 
   const formattedTags = tags.map((tag) => tag.name);
 
@@ -54,7 +50,7 @@ const Form = ({
           </span>
 
           <TagsInput
-            data={formattedAvailableTags}
+            data={formattedTagsForSelect}
             value={formattedTags}
             onChange={(newTags) =>
               setTags(newTags.map((tag) => ({ name: tag })))

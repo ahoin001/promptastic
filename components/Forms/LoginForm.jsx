@@ -13,12 +13,13 @@ import {
   Divider,
 } from "@mantine/core";
 
-import { notifications } from "@mantine/notifications";
 import { signIn } from "next-auth/react";
 import { useAuth } from "@hooks/useAuth";
 import { useForm } from "@mantine/form";
+import { useState } from "react";
 
 const LoginForm = () => {
+  const [loading, setLoading] = useState();
   const { login } = useAuth();
 
   const form = useForm({
@@ -36,9 +37,16 @@ const LoginForm = () => {
   });
 
   const handleSubmit = async (data) => {
-    const { email, password } = data;
+    setLoading(true);
 
-    login(email, password);
+    try {
+      const { email, password } = data;
+      login(email, password);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -67,6 +75,7 @@ const LoginForm = () => {
 
           <Group justify="center" mt="xl">
             <Button
+              loading={loading}
               type="submit"
               disabled={!form.isValid()}
               radius="xl"
