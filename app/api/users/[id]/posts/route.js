@@ -13,7 +13,7 @@ export const GET = async (req, { params }) => {
     const tagFilter = searchParams.get("tag");
 
     let query = {
-      userId: id,
+      user: id,
     };
 
     if (search) {
