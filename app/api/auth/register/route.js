@@ -1,6 +1,7 @@
 import User from "@models/user";
-import { hash } from "bcrypt";
+
 import { connectToDatabase } from "@utils/database";
+import { hash } from "bcrypt";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
