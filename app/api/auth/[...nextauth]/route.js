@@ -64,7 +64,7 @@ const handler = NextAuth({
           console.log("GOOGLE Profile: ", profile);
           const userExists = await User.findOne({ email: profile.email });
           if (!userExists) {
-            console.log("USER DIDNT EXIST Profile: ", pro);
+            console.log("USER DIDNT EXIST Profile: ", profile);
             await User.create({
               email: profile.email,
               username: profile.name.replace(" ", "").toLowerCase(),
