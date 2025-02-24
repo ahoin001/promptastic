@@ -61,7 +61,7 @@ const handler = NextAuth({
 
         if (account?.provider === "google") {
           console.log("GOOGLE TIME: ", account);
-          console.log("GOOGLE Profile: ", profile);
+          console.log("GOOGLE Profile: ", pro);
           const userExists = await User.findOne({ email: profile.email });
           if (!userExists) {
             await User.create({
@@ -75,7 +75,8 @@ const handler = NextAuth({
         return true;
       } catch (error) {
         console.log(error);
-        return false;
+        throw new Error("Sign-in failed");
+        // return false;
       }
     },
   },
