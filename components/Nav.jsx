@@ -87,20 +87,6 @@ const Nav = () => {
               >
                 Login
               </Button>
-
-              {/* {providers &&
-                Object.values(providers).map((provider) => {
-                  return (
-                    <Button
-                      radius={"lg"}
-                      color={"black"}
-                      key={provider.name}
-                      onClick={() => signIn(provider.id)}
-                    >
-                      {provider.name}
-                    </Button>
-                  );
-                })} */}
             </Group>
           </>
         )}
@@ -116,7 +102,7 @@ const Nav = () => {
                   src={session?.user.image}
                   width={30}
                   height={30}
-                  className="rounded-full"
+                  className="rounded-full hover:cursor-pointer"
                   alt="profile"
                 />
               </Menu.Target>
@@ -125,7 +111,7 @@ const Nav = () => {
                 <Menu.Label>Actions</Menu.Label>
                 <Menu.Item
                   component={Link}
-                  href="/profile"
+                  href={`/profile/${session?.user.id}`}
                   className="dropdown_link"
                 >
                   My Profile
@@ -133,14 +119,7 @@ const Nav = () => {
                 <Menu.Item component={Link} href="/create-prompt">
                   Create prompt
                 </Menu.Item>
-                <Menu.Item
-                  component={Button}
-                  color="black"
-                  variant="outline"
-                  onClick={signOut}
-                >
-                  Sign out
-                </Menu.Item>
+                <Menu.Item onClick={signOut}>Sign out</Menu.Item>
               </Menu.Dropdown>
             </Menu>
           </div>

@@ -20,10 +20,11 @@ const PostFilters = ({ search, selectedTag, sort, updateQueryParams }) => {
       <div className="mt-12 mb-8">
         <Group mt={16}>
           <Select
+            placeholder="Choose tag to filter by"
             label="Tag"
             value={selectedTag}
             onChange={(value) => updateQueryParams("tag", value)}
-            data={formattedTagsForSelect}
+            data={[{ value: "", label: "Any" }, ...formattedTagsForSelect]}
             clearable
           />
 

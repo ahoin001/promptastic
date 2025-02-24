@@ -1,10 +1,8 @@
-import { useGetUser } from "@hooks/useGetUser";
 import { useSession } from "next-auth/react";
 import UserFeed from "./user/UserFeed";
 
 const Profile = ({ description, profileId, user }) => {
   const { data: session } = useSession();
-  console.log(session);
   const isOwner = session?.user?.id === profileId;
 
   return (

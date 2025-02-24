@@ -37,9 +37,8 @@ const PromptCard = ({ post }) => {
         className="flex justify-between items-start gap-5"
       >
         <div className="flex flex-1 justify-start items-center gap-3 cursor-pointer">
-          {/* TODO where do they get image from? */}
-          {/* src={post.user.image} */}
           <Avatar
+            src={post.user.image || ""}
             alt="profile image"
             width={40}
             height={40}
