@@ -1,21 +1,21 @@
 "use client";
 
 import { useDisclosure } from "@mantine/hooks";
+import { usePathname } from "next/navigation";
+import { usePostActions } from "@hooks/usePostActions";
 import { useSession } from "next-auth/react";
 
-import Image from "next/image";
-
 import { Avatar, Badge, Box, Button, Group, Modal, Text } from "@mantine/core";
+import Image from "next/image";
 import Link from "next/link";
-import { usePostActions } from "@hooks/usePostActions";
-// import { useRouter } from "next/router";
 
 const PromptCard = ({ post }) => {
   const { data: session } = useSession();
-
   const [opened, { open, close }] = useDisclosure(false);
+  const pathname = usePathname(); // Get the current route
 
   const isBeingViewedByOwner = post.user._id === session?.user?.id;
+  const isProfileRoute = pathname.startsWith("/profile");
 
   const { copiedPrompt, handleCopy, handleDelete, handleEdit } =
     usePostActions();
@@ -29,9 +29,6 @@ const PromptCard = ({ post }) => {
     copiedPrompt === post.prompt
       ? "/assets/icons/tick.svg"
       : "/assets/icons/copy.svg";
-
-  // const router = useRouter();
-  // const isProfileRoute = router.pathname.startsWith("/profile");
 
   return (
     <div className="prompt_card">
@@ -70,7 +67,6 @@ const PromptCard = ({ post }) => {
       <p className="my-4 font-satoshi text-sm text-gray-700">{post.prompt}</p>
 
       <Group>
-        {/* TODO make tag click return filtered tag list */}
         {post.tags.map((tag) => {
           return (
             <Badge key={tag._id} color="yellow" size="lg" radius="md">
@@ -80,8 +76,8 @@ const PromptCard = ({ post }) => {
         })}
       </Group>
 
-      {/* Make sure users can't crud other users stuff */}
-      {isBeingViewedByOwner && (
+      {/* Make sure users can't crud other users stuff or on home feed*/}
+      {isBeingViewedByOwner && isProfileRoute && (
         <div className="mt-5 flex justify-end gap-4 border-t border-gray-200 pt-4">
           <p
             className="font-inter text-sm green_gradient cursor-pointer"
