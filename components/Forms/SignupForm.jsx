@@ -53,7 +53,6 @@ const SignUpForm = () => {
 
       if (!response.ok) {
         if (result.errors) {
-          // Handle multiple field errors from API
           form.setErrors(result.errors);
         } else {
           notifications.show({
