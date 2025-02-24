@@ -1,5 +1,6 @@
 import Feed from "@components/Feed";
 import { Stack, Text } from "@mantine/core";
+import { Suspense } from "react";
 
 export const Home = () => {
   return (
@@ -20,7 +21,9 @@ export const Home = () => {
       </Text>
 
       <div className="mt-10">
-        <Feed />
+        <Suspense>
+          <Feed />
+        </Suspense>
       </div>
     </section>
   );

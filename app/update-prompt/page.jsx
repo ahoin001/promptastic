@@ -13,15 +13,16 @@ const UpdatePrompt = () => {
   });
 
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const [tags, setTags] = useState([]);
 
   useEffect(() => {
+    const searchParams = useSearchParams();
+
     if (searchParams) {
       setPromptId(searchParams.get("id"));
     }
-  }, [searchParams]);
+  }, []);
 
   const editPost = async (e) => {
     e.preventDefault();
@@ -56,6 +57,7 @@ const UpdatePrompt = () => {
 
   useEffect(() => {
     const getPrompt = async () => {
+      if (!promptId) return;
       const res = await fetch(`/api/prompt/${promptId}`);
       const data = await res.json();
       console.log("******: ", data);
