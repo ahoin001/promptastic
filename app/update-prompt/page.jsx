@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { Suspense, useEffect, useState } from "react";
 
 import Form from "@components/Form";
@@ -9,6 +10,8 @@ const UpdatePromptContent = () => {
   const [loading, setLoading] = useState(false);
   const [promptId, setPromptId] = useState("");
   const [post, setPost] = useState({ prompt: "" });
+
+  const { data: session } = useSession();
 
   const router = useRouter();
 
@@ -43,7 +46,7 @@ const UpdatePromptContent = () => {
 
       if (res.ok) {
         setLoading(false);
-        router.push("/profile");
+        router.push(`/profile/${session?.user.id}`);
       }
     } catch (error) {
       console.log(error);
