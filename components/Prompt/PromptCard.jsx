@@ -30,8 +30,8 @@ const PromptCard = ({ post }) => {
       ? "/assets/icons/tick.svg"
       : "/assets/icons/copy.svg";
 
-  // const router = useRouter();
-  // const isProfileRoute = router.pathname.startsWith("/profile");
+  const router = useRouter();
+  const isProfileRoute = router.pathname.startsWith("/profile");
 
   return (
     <div className="prompt_card">
@@ -81,22 +81,23 @@ const PromptCard = ({ post }) => {
       </Group>
 
       {/* Make sure users can't crud other users stuff */}
-      {isBeingViewedByOwner && (
-        <div className="mt-5 flex justify-end gap-4 border-t border-gray-200 pt-4">
-          <p
-            className="font-inter text-sm green_gradient cursor-pointer"
-            onClick={() => handleEdit(post._id)} // Call handleEdit function
-          >
-            Edit
-          </p>
-          <p
-            className="font-inter text-sm orange_gradient cursor-pointer"
-            onClick={open}
-          >
-            Delete
-          </p>
-        </div>
-      )}
+      {isBeingViewedByOwner &&
+        isProfileRoute(
+          <div className="mt-5 flex justify-end gap-4 border-t border-gray-200 pt-4">
+            <p
+              className="font-inter text-sm green_gradient cursor-pointer"
+              onClick={() => handleEdit(post._id)} // Call handleEdit function
+            >
+              Edit
+            </p>
+            <p
+              className="font-inter text-sm orange_gradient cursor-pointer"
+              onClick={open}
+            >
+              Delete
+            </p>
+          </div>
+        )}
 
       <Modal
         opened={opened}
