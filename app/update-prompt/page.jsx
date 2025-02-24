@@ -16,9 +16,8 @@ const UpdatePrompt = () => {
 
   const [tags, setTags] = useState([]);
 
+  const searchParams = useSearchParams();
   useEffect(() => {
-    const searchParams = useSearchParams();
-
     if (searchParams) {
       setPromptId(searchParams.get("id"));
     }
