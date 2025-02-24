@@ -73,14 +73,9 @@ const PromptCard = ({ post, refetchPosts }) => {
         </div>
       </Link>
 
-      {/* <p className="my-4 font-satoshi text-sm text-gray-700 line-clamp-3">
-        {post.prompt}
-      </p> */}
-
       <ScrollArea
         my={10}
         h={120}
-        type="always"
         overscrollBehavior="contain"
         scrollHideDelay={0}
       >
