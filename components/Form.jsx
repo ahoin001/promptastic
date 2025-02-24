@@ -14,7 +14,7 @@ const Form = ({
 }) => {
   const { formattedTagsForSelect } = useTags(false);
 
-  const formattedTags = tags.map((tag) => tag.name);
+  const formattedTagsForPayload = tags.map((tag) => tag.name);
 
   return (
     <section className="w-full max-w-full flex-start flex-col">
@@ -51,7 +51,7 @@ const Form = ({
 
           <TagsInput
             data={formattedTagsForSelect}
-            value={formattedTags}
+            value={formattedTagsForPayload}
             onChange={(newTags) =>
               setTags(newTags.map((tag) => ({ name: tag })))
             }
