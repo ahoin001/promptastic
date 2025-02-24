@@ -8,6 +8,7 @@ import Image from "next/image";
 import { Avatar, Badge, Box, Button, Group, Modal, Text } from "@mantine/core";
 import Link from "next/link";
 import { usePostActions } from "@hooks/usePostActions";
+import { useRouter } from "next/router";
 
 const PromptCard = ({ post }) => {
   const { data: session } = useSession();
@@ -28,6 +29,9 @@ const PromptCard = ({ post }) => {
     copiedPrompt === post.prompt
       ? "/assets/icons/tick.svg"
       : "/assets/icons/copy.svg";
+
+  const router = useRouter();
+  const isProfileRoute = router.pathname.startsWith("/profile");
 
   return (
     <div className="prompt_card">
@@ -77,7 +81,7 @@ const PromptCard = ({ post }) => {
       </Group>
 
       {/* Make sure users can't crud other users stuff */}
-      {isBeingViewedByOwner && (
+      {isBeingViewedByOwner && isProfileRoute && (
         <div className="mt-5 flex justify-end gap-4 border-t border-gray-200 pt-4">
           <p
             className="font-inter text-sm green_gradient cursor-pointer"
