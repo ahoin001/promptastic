@@ -38,16 +38,7 @@ const LoginForm = () => {
   const handleSubmit = async (data) => {
     const { email, password } = data;
 
-    try {
-      login(email, password);
-    } catch (error) {
-      console.error("Login Failed:", error);
-      notifications.show({
-        title: "Error",
-        message: "Login Failed!",
-        color: "red",
-      });
-    }
+    login(email, password);
   };
 
   return (

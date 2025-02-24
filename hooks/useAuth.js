@@ -15,7 +15,6 @@ export function useAuth() {
     });
 
     if (result?.ok) {
-      //   router.push("/");
       notifications.show({
         title: "Success",
         message: "Signed in successfully!",
