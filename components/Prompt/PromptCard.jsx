@@ -64,7 +64,9 @@ const PromptCard = ({ post, refetchPosts }) => {
         </div>
       </Link>
 
-      <p className="my-4 font-satoshi text-sm text-gray-700">{post.prompt}</p>
+      <p className="my-4 font-satoshi text-sm text-gray-700 line-clamp-3">
+        {post.prompt}
+      </p>
 
       <Group>
         {post.tags.map((tag) => {
