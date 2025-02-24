@@ -56,29 +56,24 @@ const handler = NextAuth({
       return session;
     },
     async signIn({ user, account, profile, email, credentials }) {
-      try {
-        await connectToDatabase();
+      await connectToDatabase();
 
-        if (account?.provider === "google") {
-          console.log("GOOGLE TIME: ", account);
-          console.log("GOOGLE Profile: ", profile);
+      if (account?.provider === "google") {
+        console.log("GOOGLE TIME: ", account);
+        console.log("GOOGLE Profile: ", profile);
 
-          const userExists = await User.findOne({ email: profile.email });
-          if (!userExists) {
-            console.log("USER DIDNT EXIST Profile: ", profile);
-            await User.create({
-              email: profile.email,
-              username: profile.name.replace(" ", "").toLowerCase(),
-              image: profile?.picture || "",
-            });
-          }
+        const userExists = await User.findOne({ email: profile.email });
+        if (!userExists) {
+          console.log("USER DIDNT EXIST Profile: ", profile);
+          await User.create({
+            email: profile.email,
+            username: profile.name.replace(" ", "").toLowerCase(),
+            image: profile?.picture || "",
+          });
         }
-
-        return true;
-      } catch (error) {
-        console.log(error);
-        return false;
       }
+
+      return true;
     },
   },
 });
