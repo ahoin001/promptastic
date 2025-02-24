@@ -1,9 +1,10 @@
+import { connectToDatabase } from "@utils/database";
+
 import bcrypt from "bcrypt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import NextAuth from "next-auth";
 import User from "@models/user";
-import { connectToDatabase } from "@utils/database";
 
 const handler = NextAuth({
   providers: [
