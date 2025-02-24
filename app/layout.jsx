@@ -34,7 +34,7 @@ const RootLayout = ({ children }) => {
           <main className="app">
             <QueryProvider>
               <MantineProvider>
-                <Notifications color="teal" position="top-middle" />
+                <Notifications color="teal" position="top-center" />
                 <Nav />
                 {children}
               </MantineProvider>
