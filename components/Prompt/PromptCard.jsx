@@ -20,10 +20,10 @@ const PromptCard = ({ post, refetchPosts }) => {
   const { copiedPrompt, handleCopy, handleDelete, handleEdit } =
     usePostActions();
 
-  const onConfirmDelete = (postId) => {
+  const onConfirmDelete = async (postId) => {
     close();
-    handleDelete(postId);
-    refetchPosts();
+    await handleDelete(postId);
+    await refetchPosts();
   };
 
   const iconUrl =
