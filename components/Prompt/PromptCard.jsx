@@ -5,7 +5,16 @@ import { usePathname } from "next/navigation";
 import { usePostActions } from "@hooks/usePostActions";
 import { useSession } from "next-auth/react";
 
-import { Avatar, Badge, Box, Button, Group, Modal, Text } from "@mantine/core";
+import {
+  Avatar,
+  Badge,
+  Box,
+  Button,
+  Group,
+  Modal,
+  ScrollArea,
+  Text,
+} from "@mantine/core";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -64,9 +73,21 @@ const PromptCard = ({ post, refetchPosts }) => {
         </div>
       </Link>
 
-      <p className="my-4 font-satoshi text-sm text-gray-700 line-clamp-3">
+      {/* <p className="my-4 font-satoshi text-sm text-gray-700 line-clamp-3">
         {post.prompt}
-      </p>
+      </p> */}
+
+      <ScrollArea
+        my={10}
+        h={120}
+        type="always"
+        overscrollBehavior="contain"
+        scrollHideDelay={0}
+      >
+        <span className="my-4 font-satoshi text-sm text-gray-700  overflow-hidden break-words">
+          {post.prompt}
+        </span>
+      </ScrollArea>
 
       <Group>
         {post.tags.map((tag) => {
