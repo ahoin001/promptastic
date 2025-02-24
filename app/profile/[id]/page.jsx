@@ -1,8 +1,8 @@
 "use client";
 
-import { useParams } from "next/navigation";
 import Profile from "@components/Profile";
 import { useGetUser } from "@hooks/useGetUser";
+import { useParams } from "next/navigation";
 
 const SomeProfile = () => {
   const { id: profileId } = useParams();
