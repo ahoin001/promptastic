@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import PromptCard from "./PromptCard";
 import { Group, Loader, SimpleGrid, Text, Transition } from "@mantine/core";
 
-const PromptCardList = ({ posts, loading }) => {
+const PromptCardList = ({ posts, loading, refetchPosts }) => {
   const [showGrid, setShowGrid] = useState(false);
 
   useEffect(() => {
@@ -33,7 +33,11 @@ const PromptCardList = ({ posts, loading }) => {
               style={styles}
             >
               {posts.map((post) => (
-                <PromptCard key={post._id} post={post} />
+                <PromptCard
+                  key={post._id}
+                  post={post}
+                  refetchPosts={refetchPosts}
+                />
               ))}
             </SimpleGrid>
           )}

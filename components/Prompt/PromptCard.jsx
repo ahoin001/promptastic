@@ -9,10 +9,10 @@ import { Avatar, Badge, Box, Button, Group, Modal, Text } from "@mantine/core";
 import Image from "next/image";
 import Link from "next/link";
 
-const PromptCard = ({ post }) => {
+const PromptCard = ({ post, refetchPosts }) => {
   const { data: session } = useSession();
   const [opened, { open, close }] = useDisclosure(false);
-  const pathname = usePathname(); // Get the current route
+  const pathname = usePathname();
 
   const isBeingViewedByOwner = post.user._id === session?.user?.id;
   const isProfileRoute = pathname.startsWith("/profile");
@@ -23,6 +23,7 @@ const PromptCard = ({ post }) => {
   const onConfirmDelete = (postId) => {
     close();
     handleDelete(postId);
+    refetchPosts();
   };
 
   const iconUrl =

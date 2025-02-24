@@ -13,7 +13,11 @@ const UserFeed = ({ userId }) => {
     updateQueryParams,
   } = usePostFilters();
 
-  const { data: posts = [], isPending } = useUserPosts(userId, {
+  const {
+    data: posts = [],
+    isPending,
+    refetch: refetchPosts,
+  } = useUserPosts(userId, {
     search,
     sort,
     selectedTag,
@@ -28,7 +32,11 @@ const UserFeed = ({ userId }) => {
         selectedTag={selectedTag}
       />
 
-      <PromptCardList posts={posts} loading={isPending} />
+      <PromptCardList
+        refetchPosts={refetchPosts}
+        posts={posts}
+        loading={isPending}
+      />
     </section>
   );
 };
