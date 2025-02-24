@@ -5,15 +5,15 @@ import { Suspense } from "react";
 export const Home = () => {
   return (
     <section className="w-full">
-      <Stack justify="center" align="center">
-        <h1 className="head_text text_center">
+      <div className="text-center">
+        <h1 className="head_text">
           Discover & Share
           <br className="max-md:hidden " />
           <span className="orange_gradient text-center">
             AI Powered Prompts
           </span>
         </h1>
-      </Stack>
+      </div>
 
       <Text mt={16} size="xl" c="dimmed" ta="center">
         Promptastic is an open source AI pompting tool for modern world to
