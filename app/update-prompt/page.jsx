@@ -1,21 +1,27 @@
 "use client";
+
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import Form from "@components/Form";
 
 const UpdatePrompt = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const promptId = searchParams.get("id");
-
   const [loading, setLoading] = useState(false);
+  const [promptId, setPromptId] = useState("");
   const [post, setPost] = useState({
     prompt: "",
   });
 
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [tags, setTags] = useState([]);
+
+  useEffect(() => {
+    if (searchParams) {
+      setPromptId(searchParams.get("id"));
+    }
+  }, [searchParams]);
 
   const editPost = async (e) => {
     e.preventDefault();
@@ -24,7 +30,7 @@ const UpdatePrompt = () => {
     if (!promptId) {
       alert("Prompt id not found");
     }
-    // TODO Update edit of array of tags, currently current tags not making it to form
+
     try {
       const res = await fetch(`/api/prompt/${promptId}`, {
         method: "PATCH",
