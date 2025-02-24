@@ -67,7 +67,7 @@ const handler = NextAuth({
             console.log("USER DIDNT EXIST Profile: ", profile);
             await User.create({
               email: profile.email,
-              username: profile.name.replace(" ", "").toLowerCase(),
+              username: profile.name,
               image: profile?.picture || "",
             });
           }
