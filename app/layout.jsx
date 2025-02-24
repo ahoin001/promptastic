@@ -1,7 +1,3 @@
-// TODO Polishing
-//  Add loading states
-//  Make profile page require authentication
-
 // Imports styles here to be used for entire application
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
@@ -38,7 +34,7 @@ const RootLayout = ({ children }) => {
           <main className="app">
             <QueryProvider>
               <MantineProvider>
-                <Notifications color="teal" position="top-center" />
+                <Notifications color="teal" position="top-middle" />
                 <Nav />
                 {children}
               </MantineProvider>
