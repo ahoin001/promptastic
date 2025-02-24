@@ -8,9 +8,7 @@ import Form from "@components/Form";
 const UpdatePrompt = () => {
   const [loading, setLoading] = useState(false);
   const [promptId, setPromptId] = useState("");
-  const [post, setPost] = useState({
-    prompt: "",
-  });
+  const [post, setPost] = useState({ prompt: "" });
 
   const router = useRouter();
 
