@@ -50,6 +50,7 @@ const Form = ({
           </span>
 
           <TagsInput
+            required
             data={formattedTagsForSelect}
             value={formattedTagsForPayload}
             onChange={(newTags) =>
