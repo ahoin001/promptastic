@@ -62,13 +62,14 @@ const handler = NextAuth({
         if (account?.provider === "google") {
           console.log("GOOGLE TIME: ", account);
           console.log("GOOGLE Profile: ", profile);
+
           const userExists = await User.findOne({ email: profile.email });
           if (!userExists) {
             console.log("USER DIDNT EXIST Profile: ", profile);
             await User.create({
               email: profile.email,
               username: profile.name.replace(" ", "").toLowerCase(),
-              image: profile.picture,
+              image: profile?.picture || "",
             });
           }
         }
