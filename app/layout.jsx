@@ -17,7 +17,7 @@ import QueryProvider from "./providers/QueryProvider";
 
 export const metadata = {
   description: "Discover & Share Prompts for Writing",
-  icons: { icon: "/favicon.ico" },
+  icons: { icon: "/favicon.svg" },
   title: "Promptastic",
 };
 
