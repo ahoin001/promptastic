@@ -12,8 +12,8 @@ const UserSchema = new Schema({
     type: String,
     unique: [true, "Username already exists"],
     match: [
-      /^[a-zA-Z0-9\s-]+$/,
-      "Username can only contain letters, numbers, spaces, and dashes",
+      /^[a-zA-Z0-9\s-_]+$/,
+      "Username can only contain letters, numbers, spaces, dashes, and underscores",
     ],
   },
   password: {
