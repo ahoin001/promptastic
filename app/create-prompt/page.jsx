@@ -33,7 +33,6 @@ const CreatePrompt = () => {
       if (!res.ok) throw new Error("Failed to create prompt");
 
       const data = await res.json();
-      console.log("createPrompt: ", data);
 
       notifications.show({
         title: "Success",
