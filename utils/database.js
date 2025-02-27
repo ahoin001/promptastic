@@ -12,10 +12,7 @@ export const connectToDatabase = async () => {
   }
 
   try {
-    const dbUri =
-      process.env.NODE_ENV === "production"
-        ? process.env.MONGO_URI_PRODUCTION
-        : process.env.MONGO_URI_LOCAL;
+    const dbUri = process.env.MONGO_URI;
 
     const dbName =
       process.env.NODE_ENV === "production"

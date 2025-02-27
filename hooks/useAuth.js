@@ -21,6 +21,8 @@ export function useAuth() {
         color: "teal",
       });
     } else {
+      console.log("fail: ", result);
+      console.log("fail: ", result.error);
       notifications.show({
         title: "Error",
         message: result?.error || "Login failed",
