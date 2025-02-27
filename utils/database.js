@@ -12,9 +12,19 @@ export const connectToDatabase = async () => {
   }
 
   try {
-    await mongoose.connect(process.env.MONGODB_URI, {
-      dbName: "promptastic_db",
-    });
+    const dbUri =
+      process.env.NODE_ENV === "production"
+        ? process.env.MONGO_URI_PRODUCTION
+        : process.env.MONGO_URI_LOCAL;
+
+    const dbName =
+      process.env.NODE_ENV === "production"
+        ? "promptastic_db"
+        : "promptastic_dev";
+
+    console.log(`Connecting to MongoDB: ${dbUri} (DB: ${dbName})`);
+
+    await mongoose.connect(dbUri, { dbName });
 
     isConnected = true;
 
