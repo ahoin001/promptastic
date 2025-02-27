@@ -1,5 +1,5 @@
 import Feed from "@components/Feed";
-import { Stack, Text } from "@mantine/core";
+import { Text } from "@mantine/core";
 import { Suspense } from "react";
 
 export const Home = () => {

@@ -83,68 +83,66 @@ const SignUpForm = () => {
   };
 
   return (
-    <div>
-      <Card miw={700} shadow="sm" padding="lg" radius="md" withBorder>
-        <Group justify="center" mt="md" mb="xs">
-          <Text size={"xl"} fw={500}>
-            Sign Up
-          </Text>
+    <Card miw="100%" shadow="sm" padding="lg" radius="md" withBorder>
+      <Group justify="center" mt="md" mb="xs">
+        <Text size={"xl"} fw={500}>
+          Sign Up
+        </Text>
+      </Group>
+      <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Stack>
+          <TextInput
+            mt="md"
+            label="Username"
+            placeholder="Username for account"
+            error={form.errors.username}
+            withAsterisk
+            {...form.getInputProps("username")}
+          />
+
+          <TextInput
+            withAsterisk
+            mt="md"
+            label="Email"
+            placeholder="Email"
+            error={form.errors.email}
+            {...form.getInputProps("email")}
+          />
+
+          <TextInput
+            withAsterisk
+            label="Password"
+            placeholder="Password"
+            error={form.errors.password}
+            {...form.getInputProps("password")}
+          />
+        </Stack>
+
+        <Group justify="center" mt="xl">
+          <Button
+            type="submit"
+            radius="xl"
+            variant="gradient"
+            gradient={{ from: "red", to: "orange", deg: 90 }}
+          >
+            Submit
+          </Button>
         </Group>
-        <form onSubmit={form.onSubmit(handleSubmit)}>
-          <Stack>
-            <TextInput
-              mt="md"
-              label="Username"
-              placeholder="Username for account"
-              error={form.errors.username}
-              withAsterisk
-              {...form.getInputProps("username")}
-            />
+      </form>
+      <Group justify="center" mt={28}>
+        <Link href="/login" className="hover:underline hover:cursor-pointer">
+          <Text>Already have an account? Login</Text>
+        </Link>
+      </Group>
 
-            <TextInput
-              withAsterisk
-              mt="md"
-              label="Email"
-              placeholder="Email"
-              error={form.errors.email}
-              {...form.getInputProps("email")}
-            />
+      <Divider my="md" label="or" labelPosition="center" />
 
-            <TextInput
-              withAsterisk
-              label="Password"
-              placeholder="Password"
-              error={form.errors.password}
-              {...form.getInputProps("password")}
-            />
-          </Stack>
-
-          <Group justify="center" mt="xl">
-            <Button
-              type="submit"
-              radius="xl"
-              variant="gradient"
-              gradient={{ from: "red", to: "orange", deg: 90 }}
-            >
-              Submit
-            </Button>
-          </Group>
-        </form>
-        <Group justify="center" mt={28}>
-          <Link href="/login" className="hover:underline hover:cursor-pointer">
-            <Text>Already have an account? Login</Text>
-          </Link>
-        </Group>
-
-        <Divider my="md" label="or" labelPosition="center" />
-
-        <Group justify="center">
-          <div onClick={() => signIn("google")}>
-            <GoogleButton />
-          </div>
-        </Group>
-      </Card>
-    </div>
+      <Group justify="center">
+        <div onClick={() => signIn("google")}>
+          <GoogleButton />
+        </div>
+      </Group>
+    </Card>
   );
 };
 

@@ -125,19 +125,26 @@ const Nav = () => {
           </div>
         ) : (
           <>
-            {providers &&
-              Object.values(providers).map((provider) => {
-                return (
-                  <button
-                    type="button"
-                    key={provider.name}
-                    onClick={() => signIn(provider.id)}
-                    className="black_btn"
-                  >
-                    Sign in
-                  </button>
-                );
-              })}
+            <Group>
+              <Button
+                component={Link}
+                href={"/register"}
+                color={"black"}
+                variant="outline"
+                radius={"lg"}
+              >
+                Register
+              </Button>
+
+              <Button
+                component={Link}
+                href={"/login"}
+                color={"black"}
+                radius={"lg"}
+              >
+                Login
+              </Button>
+            </Group>
           </>
         )}
       </div>
