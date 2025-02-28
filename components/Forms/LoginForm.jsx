@@ -5,6 +5,7 @@ import Link from "@node_modules/next/link";
 
 import {
   Card,
+  PasswordInput,
   Text,
   TextInput,
   Button,
@@ -65,7 +66,7 @@ const LoginForm = () => {
             {...form.getInputProps("email")}
           />
 
-          <TextInput
+          <PasswordInput
             label="Password"
             placeholder="Password"
             {...form.getInputProps("password")}

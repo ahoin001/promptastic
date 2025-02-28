@@ -5,6 +5,7 @@ import GoogleButton from "@components/GoogleButton";
 import Link from "@node_modules/next/link";
 import {
   Card,
+  PasswordInput,
   Text,
   TextInput,
   Button,
@@ -109,11 +110,10 @@ const SignUpForm = () => {
             {...form.getInputProps("email")}
           />
 
-          <TextInput
+          <PasswordInput
             withAsterisk
             label="Password"
             placeholder="Password"
-            error={form.errors.password}
             {...form.getInputProps("password")}
           />
         </Stack>
