@@ -36,7 +36,6 @@ const PostFilters = ({ search, selectedTag, sort, updateQueryParams }) => {
               { value: "desc", label: "Latest" },
               { value: "asc", label: "Oldest" },
             ]}
-            clearable
           />
         </Group>
       </div>
